@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -77,6 +78,19 @@ export default function App() {
   )
 
   const Drawer = createDrawerNavigator()
+
+// Loading Screen
+  const [isLoading, setIsLoading] = useState(true) 
+  useEffect(()=>{ setTimeout(()=>{ setIsLoading(false) }, 1000) },[])
+
+  if(isLoading) {
+    return (
+      <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
+        <Text style={{color:colours.white}}>Loading...</Text>
+      </View>
+    )
+  }
+//
 
   return (
     <NavigationContainer>
