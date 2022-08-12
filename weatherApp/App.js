@@ -7,25 +7,61 @@ import colours from './app/config/colours.js'
 import {NavigationContainer} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
+// Screens
 import HomeScreen from './app/screens/HomeScreen'
 import About from './app/screens/About.js';
 
+const Test = ({route}) =>{
+  return(
+    <View>
+      <Text>Test 1</Text>
+      {route.params.name && <Text>{route.params.name}</Text>}
+    </View>
+  )
+}
 
+const Test2 = ({route}) =>{
+  return(
+    <View>
+      <Text>Test 2</Text>
+      {route.params.name && <Text>{route.params.name}</Text>}
+    </View>
+
+  )
+}
 
 export default function App() {
-
-
-const AuthStack = createStackNavigator()
-const Tabs = createBottomTabNavigator()
+  
+  const AuthStack = createStackNavigator()
+  const Tabs = createBottomTabNavigator()
+  
+  const HomeStack = createStackNavigator()
+  const AboutStack = createStackNavigator() 
+  
+  const HomeStackScreen = () =>(
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen}/>
+      <HomeStack.Screen name="Test" component={Test} options={({route}) =>({ title:route.params.name })} />
+    </HomeStack.Navigator>
+  )
+  
+  const AboutStackScreen = () =>(
+    <AboutStack.Navigator>
+      <AboutStack.Screen name="AboutScreen" component={About}/>
+      <AboutStack.Screen name="Test2" component={Test2} options={({route}) =>({ title:route.params.name })} />
+    </AboutStack.Navigator>
+  )
 
 
   return (
     <NavigationContainer>
 
       {/* Tab Nav */}
-      <Tabs.Navigator>
-        <Tabs.Screen name="Home" component={HomeScreen} options={{title:"Home"}} />
-        <Tabs.Screen name="About" component={About} />
+      <Tabs.Navigator screenOptions={{ headerShown:false }}>
+        <Tabs.Screen name="Home" component={HomeStackScreen} />
+        <Tabs.Screen name="About" component={AboutStackScreen} />
       </Tabs.Navigator>
 
 

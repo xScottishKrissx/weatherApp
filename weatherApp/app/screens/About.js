@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 export default function About({navigation}) {
   return (
     <View>
-        <Text onPress={()=>navigation.push("Home")}>Return Home</Text>
+        <Text >About Page</Text>
+        <Text onPress={()=>navigation.push("Test2", {name:"Test 2 Header"})}>Go To Test 2</Text>
     </View>
   )
 }

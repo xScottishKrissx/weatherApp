@@ -45,7 +45,19 @@ function HomeScreen({navigation}) {
             <View style={styles.locationWeatherContainer}>
                 <Text>Glasgow</Text>
                 <Text>25 degrees</Text>
-                <Text onPress={()=>navigation.push("About")}>About</Text>
+
+                {/* Nav */}
+                <Text>-- Nav Test --</Text>
+                <Text onPress={()=>navigation.push("AboutScreen")}>Navigate To About Screen</Text>
+                <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text>
+
+                {/* Navigate across stacks Home to About */}
+                <Text onPress={()=>{
+                    navigation.navigate('About',{
+                        screen:'Test2',
+                        params:{name:"Test 2 Header"}
+                    })
+                }}>Go Directly To Test 2 in About</Text>
             </View>
 
             <View style={styles.forecastContainer}>
