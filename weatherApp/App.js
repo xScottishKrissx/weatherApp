@@ -4,10 +4,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import colours from './app/config/colours.js'
 
 
-import {NavigationContainer} from '@react-navigation/native'
+import {DrawerActions, Drawer, NavigationContainer} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 // Screens
 import HomeScreen from './app/screens/HomeScreen'
@@ -27,6 +27,14 @@ const Test2 = ({route}) =>{
     <View>
       <Text>Test 2</Text>
       {route.params.name && <Text>{route.params.name}</Text>}
+    </View>
+
+  )
+}
+const Test3 = ({route}) =>{
+  return(
+    <View>
+      <Text>Test 3</Text>
     </View>
 
   )
@@ -54,15 +62,35 @@ export default function App() {
     </AboutStack.Navigator>
   )
 
+  const Test3Stack = createStackNavigator()
+  const Test3StackScreen = () =>(
+    <Test3Stack.Navigator>
+      <Test3Stack.Screen name="Test3Stack" component={Test3}  />
+    </Test3Stack.Navigator>
+  )
+
+  const TabsScreen = () =>(
+    <Tabs.Navigator screenOptions={{ headerShown:false }}>
+      <Tabs.Screen name="Home" component={HomeStackScreen} />
+      <Tabs.Screen name="About" component={AboutStackScreen} />
+    </Tabs.Navigator>
+  )
+
+  const Drawer = createDrawerNavigator()
 
   return (
     <NavigationContainer>
+        <Drawer.Navigator>
+          <Drawer.Screen name="HomeScreen2" component={TabsScreen} />
+          <Drawer.Screen name="Test3" component={Test3StackScreen} />
+          
+        </Drawer.Navigator>
 
       {/* Tab Nav */}
-      <Tabs.Navigator screenOptions={{ headerShown:false }}>
+      {/* <Tabs.Navigator screenOptions={{ headerShown:false }}>
         <Tabs.Screen name="Home" component={HomeStackScreen} />
         <Tabs.Screen name="About" component={AboutStackScreen} />
-      </Tabs.Navigator>
+      </Tabs.Navigator> */}
 
 
       {/* Basic Stack Nav */}

@@ -36,7 +36,7 @@ function HomeScreen({navigation}) {
         <ImageBackground style={styles.container} source={require("../assets/clearSky.jpg")}>
             
             <View style={styles.headerContainer}>
-                <MatIcons name='menu' size={32} color='white' />
+                <MatIcons name='menu' size={32} color='white' onPress={()=>navigation.toggleDrawer()}/>
                 <Text style={styles.headerContainerHeading}>The Weather</Text>
                 <MatIcons name='search' size={32} color='white' />
                 
