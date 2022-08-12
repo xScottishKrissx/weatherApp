@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 
-function HomeScreen(props) {
+function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
     // const [apiData, setApiData] = useState(null)
@@ -45,6 +45,7 @@ function HomeScreen(props) {
             <View style={styles.locationWeatherContainer}>
                 <Text>Glasgow</Text>
                 <Text>25 degrees</Text>
+                <Text onPress={()=>navigation.push("About")}>About</Text>
             </View>
 
             <View style={styles.forecastContainer}>
