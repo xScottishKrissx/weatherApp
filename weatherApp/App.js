@@ -50,7 +50,7 @@ export default function App() {
   const AboutStack = createStackNavigator() 
   
   const HomeStackScreen = () =>(
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{ headerShown:false }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen}/>
       <HomeStack.Screen name="Test" component={Test} options={({route}) =>({ title:route.params.name })} />
     </HomeStack.Navigator>
@@ -65,13 +65,19 @@ export default function App() {
 
   const Test3Stack = createStackNavigator()
   const Test3StackScreen = () =>(
-    <Test3Stack.Navigator>
+    <Test3Stack.Navigator screenOptions={{ headerShown:false }}>
       <Test3Stack.Screen name="Test3Stack" component={Test3}  />
     </Test3Stack.Navigator>
   )
 
   const TabsScreen = () =>(
-    <Tabs.Navigator screenOptions={{ headerShown:false }}>
+    <Tabs.Navigator  
+      screenOptions={{
+        headerShown:false, 
+        // tabBarActiveBackgroundColor:"rgba(255, 255, 255, .4)",
+        // tabBarInactiveBackgroundColor:"grey",        
+        }}>
+
       <Tabs.Screen name="Home" component={HomeStackScreen} />
       <Tabs.Screen name="About" component={AboutStackScreen} />
     </Tabs.Navigator>
@@ -93,8 +99,8 @@ export default function App() {
 //
 
   return (
-    <NavigationContainer>
-        <Drawer.Navigator>
+    <NavigationContainer >
+        <Drawer.Navigator screenOptions={{ headerShown:false}}>
           <Drawer.Screen name="HomeScreen2" component={TabsScreen} />
           <Drawer.Screen name="Test3" component={Test3StackScreen} />
           

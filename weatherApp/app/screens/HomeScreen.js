@@ -43,21 +43,40 @@ function HomeScreen({navigation}) {
             </View>        
 
             <View style={styles.locationWeatherContainer}>
-                <Text>Glasgow</Text>
-                <Text>25 degrees</Text>
+{/* 1st Row */}
+                <View style={styles.rowStyle}> 
+                    <MatIcons name='loop' size={16} color='white' />
+                    <Text style={{paddingLeft:10}}>Last Updated</Text>
+                </View>
+{/* 2nd Row */}
+                <View style={styles.rowStyle}>
+                    <Text style={{fontSize:35}}>Silverburn Centre</Text>
+                    <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
+                </View>
+{/* 3rd Row */}
+                <Text>Foreast Period</Text>
+                <Text>Start - End</Text>
+{/* 4th Row */}
+                <Text>Weather Icon</Text>
+                <Text>Temperature</Text>
+                <Text>Humidity - Wind Speed</Text>
+{/* 5th Row */}
+                <Text>Weather Description </Text>
+
+
 
                 {/* Nav */}
-                <Text>-- Nav Test --</Text>
+                {/* <Text>-- Nav Test --</Text>
                 <Text onPress={()=>navigation.push("AboutScreen")}>Navigate To About Screen</Text>
-                <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text>
+                <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text> */}
 
                 {/* Navigate across stacks Home to About */}
-                <Text onPress={()=>{
+                {/* <Text onPress={()=>{
                     navigation.navigate('About',{
                         screen:'Test2',
                         params:{name:"Test 2 Header"}
                     })
-                }}>Go Directly To Test 2 in About</Text>
+                }}>Go Directly To Test 2 in About</Text> */}
             </View>
 
             <View style={styles.forecastContainer}>
@@ -83,9 +102,11 @@ const styles = StyleSheet.create({
             alignItems:"center",
             justifyContent:"space-between",
             flexDirection:"row",
-        borderWidth:1,
+        // borderWidth:1,
         borderColor:"red",
-        width:"90%"
+        width:colours.contentAreaWidth,
+        top:30
+        
     },
     headerContainerHeading:{
         color:colours.white,
@@ -93,16 +114,26 @@ const styles = StyleSheet.create({
     locationWeatherContainer:{
         // backgroundColor:"grey",
         flex:9,
-        width:"100%",
+        // paddingLeft:10,
+        marginTop:20,
+        width:colours.contentAreaWidth
         // height:"100%",
-        justifyContent:"center",
-        alignItems:"center"
+        // justifyContent:"center",
+        // alignItems:"center"
+    },
+    rowStyle:{
+        flexDirection:'row',
+        alignItems:"center",
+        marginBottom:10
+        // justifyContent:'space-evenly'
+
     },
     forecastContainer:{
         flex:1,            
             alignItems:"center",
             justifyContent:"center",
         borderWidth:1,
-        borderColor:"red"
+        borderColor:"red",
+        width:colours.contentAreaWidth
     }
 })
