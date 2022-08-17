@@ -6,34 +6,45 @@ import colours from '../config/colours'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MatIcons from '@expo/vector-icons/MaterialIcons'
+import FeatherIcons from '@expo/vector-icons/Feather'
 
 function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
-    // const [apiData, setApiData] = useState(null)
-    // const [loading, setLoading] = useState(true)
+    const [apiData, setApiData] = useState(null)
+    const [loading, setLoading] = useState(true)
 
-    // useEffect(() => {
-    //     fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
-    //     .then(res => {
-    //         return res.json()
-    //     })
-    //     .then(data => {
-    //         setApiData(data)
-    //         setLoading(false)
-    //     } )
-    //     .catch(error => console.log(error))
+    useEffect(() => {
+        fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            setApiData(data)
+            setLoading(false)
+        } )
+        .catch(error => console.log(error))
         
-    // }, [])
-    // console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    // console.log(apiData)
-    // const temp = apiData.list[0].main.temp
-    // const citName = apiData.city.name
+    }, [])
+    
+    if(loading === true) return (
+        <View><Text>Loading...</Text></View>
+    )
+    console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
+    console.log(apiData.city.sunrise)
+    const temp = Math.floor(apiData.list[0].main.temp)
+    const humidity = apiData.list[0].main.humidity
+    const citName = apiData.city.name
+    const description = apiData.list[0].weather[0].description
+    const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
+    const sunrise = apiData.city.sunrise
+    const sunset = apiData.city.sunset
+    
 
 // Static Work
 
     return (
-        <ImageBackground style={styles.container} source={require("../assets/clearSky.jpg")}>
+        <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
             
             <View style={styles.headerContainer}>
                 <MatIcons name='menu' size={32} color='white' onPress={()=>navigation.toggleDrawer()}/>
@@ -46,22 +57,38 @@ function HomeScreen({navigation}) {
 {/* 1st Row */}
                 <View style={styles.rowStyle}> 
                     <MatIcons name='loop' size={16} color='white' />
-                    <Text style={{paddingLeft:10}}>Last Updated</Text>
+                    <Text style={{paddingLeft:10}}>Updated a moment ago</Text>
                 </View>
 {/* 2nd Row */}
                 <View style={styles.rowStyle}>
-                    <Text style={{fontSize:35}}>Silverburn Centre</Text>
+                    <Text style={{fontSize:35}}>{citName}</Text>
                     <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
                 </View>
 {/* 3rd Row */}
-                <Text>Foreast Period</Text>
-                <Text>Start - End</Text>
+
+                <View style={[styles.rowStyle, styles.forecastPeriod]}>
+                    <Text style={{fontSize:20}}>Next Hour</Text>
+                    <Text style={{fontSize:11}}>{sunrise} - {sunset}</Text>
+                </View>
 {/* 4th Row */}
-                <Text>Weather Icon</Text>
-                <Text>Temperature</Text>
-                <Text>Humidity - Wind Speed</Text>
+
+                <View style={[styles.rowStyle, styles.weatherReport]}>
+
+                        <Text><FeatherIcons name="cloud" size={180} color="white" /></Text>
+
+                        <View>
+                            <Text style={{fontSize:50, color:"white", fontWeight:"900",}}>{temp}&#176;</Text>
+                            <View>
+                                
+                                <Text>Humidity: {humidity}%</Text>
+                                <Text><FeatherIcons name="wind" size={32} color="white" />{windSpeed}mph</Text>
+                            </View>
+                        </View>
+                </View>
 {/* 5th Row */}
-                <Text>Weather Description </Text>
+                <Text style={{justifyContent:"center", color:"white", textAlign:"center"}}>{description}</Text>
+                {/* There are not weather warnings in openWeatherAPi */}
+                {/* <Text>Weather Warnings</Text> */}
 
 
 
@@ -79,10 +106,9 @@ function HomeScreen({navigation}) {
                 }}>Go Directly To Test 2 in About</Text> */}
             </View>
 
-            <View style={styles.forecastContainer}>
+            {/* <View style={styles.forecastContainer}>
                 <Text>forecasts</Text>
-                
-            </View>
+            </View> */}
             
         </ImageBackground>
     );
@@ -94,7 +120,9 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         width:"100%",
-        alignItems:"center"
+        alignItems:"center",
+        blurRadius:1
+        
     },
     headerContainer:{
         color:colours.white,
@@ -114,19 +142,13 @@ const styles = StyleSheet.create({
     locationWeatherContainer:{
         // backgroundColor:"grey",
         flex:9,
-        // paddingLeft:10,
-        marginTop:20,
+        marginTop:30,
         width:colours.contentAreaWidth
-        // height:"100%",
-        // justifyContent:"center",
-        // alignItems:"center"
     },
     rowStyle:{
         flexDirection:'row',
         alignItems:"center",
         marginBottom:10
-        // justifyContent:'space-evenly'
-
     },
     forecastContainer:{
         flex:1,            
@@ -135,5 +157,18 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor:"red",
         width:colours.contentAreaWidth
+    },
+    forecastPeriod:{
+        justifyContent:"space-between"
+    },
+    weatherReport:{
+        justifyContent:"center",
+        flexDirection:"column",
+        // backgroundColor:"red",
+    },
+    borderTest:{
+        borderWidth:1,
+        borderColor:"red",
     }
+    
 })
