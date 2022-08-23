@@ -8,6 +8,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
 
+
 function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
@@ -32,7 +33,21 @@ function HomeScreen({navigation}) {
     )
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log(apiData)
-    console.log(apiData.city.sunrise)
+    console.log(apiData.list[0])
+    
+    
+    // console.log(apiData.list[0].main.temp)
+    const getObjects = apiData.list.slice(0,40).map((x,index) =>{
+        // return console.log(x.dt_txt + " - " + x.main.temp + " - " + x.weather[0].description + " - " + x.main.humidity + "%")
+        return console.log(`${x.dt.txt} - ${x.main.temp} - ${x.weather[0].description} - ${x.main.humidity}`)
+    })
+    // console.log(getObjects)
+
+
+
+    
+    
+
     const temp = Math.floor(apiData.list[0].main.temp)
     const minTemp = Math.floor(apiData.list[0].main.temp_min)
     const maxTemp = Math.floor(apiData.list[0].main.temp_max)
@@ -56,7 +71,6 @@ function HomeScreen({navigation}) {
                 <MatIcons name='menu' size={32} color='white' onPress={()=>navigation.toggleDrawer()}/>
                 <Text style={styles.headerContainerHeading}>The Weather</Text>
                 <MatIcons name='search' size={32} color='white' />
-                
             </View>        
 
             <View style={styles.locationWeatherContainer}>
