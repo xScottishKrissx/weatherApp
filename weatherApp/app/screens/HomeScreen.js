@@ -37,17 +37,7 @@ function HomeScreen({navigation}) {
     
     
     console.log(apiData.list[0].main.temp)
-    let newArrayThing = []
-    const getForecast = apiData.list.slice(0,23).map((x,index) =>{
-        return (
-            <View style={[styles.forecastItem, styles.borderTest]} key={index}>
-                <Text>Time: {x.dt_txt}</Text>
-                <Text>Temp: {x.main.temp}</Text>
-                <Text>Description: {x.weather[0].description}</Text>
-                <Text>Humidity: {x.main.humidity}%</Text>
-            </View>
-        )
-    })   
+
     
 
 
@@ -69,10 +59,6 @@ function HomeScreen({navigation}) {
 
     return (
         <View style={styles.container}>
-        {/* <ScrollView> */}
-
-        
-        
 
         <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
             
@@ -100,17 +86,17 @@ function HomeScreen({navigation}) {
                         <Text style={{marginLeft:10, color:colours.white }}>{sunset}</Text>
                     </View>
                </View>
-{/* 2nd Row */}
+
                 <View style={styles.rowStyle}>
                     <Text style={{fontSize:35}}>{citName}</Text>
                     <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
                 </View>
-{/* 3rd Row */}
+
 
                 <View style={[styles.rowStyle, styles.forecastPeriod]}>
                     <Text style={{fontSize:20}}>Next Hour</Text>
                 </View>
-{/* 4th Row */}
+
 
                 <View style={[styles.rowStyle, styles.weatherReport, styles.borderTest]}>
 
@@ -130,11 +116,6 @@ function HomeScreen({navigation}) {
                         </View>
 
                 </View>
-{/* 5th Row */}
-                {/* There are not weather warnings in openWeatherAPi */}
-                {/* <Text>Weather Warnings</Text> */}
-
-
 
                 {/* Nav */}
                 {/* <Text>-- Nav Test --</Text>
@@ -148,27 +129,43 @@ function HomeScreen({navigation}) {
                         params:{name:"Test 2 Header"}
                     })
                 }}>Go Directly To Test 2 in About</Text> */}
-            <Text style={{fontSize:20}}>Future Forecast</Text>
- 
-            <Text>Get Forecast</Text>
-            {/* {getForecast} */}
+            <Text style={{fontSize:20}}>Forecast</Text>
             <FlatList
                 // numColumns={2}
                 style={{flex:1, borderWidth:1, borderColor:"red", width:"100%"}}
                 data={apiData.list}
-                renderItem={({item,index}) =>(
-                    <View style={[styles.forecastItem, styles.borderTest]} key={index}>
-                        <Text>Time: {item.dt_txt}</Text>
-                        <Text>Temp: {item.main.temp}</Text>
-                        <Text>Description: {item.weather[0].description}</Text>
-                        <Text>Humidity: {item.main.humidity}%</Text>
-                    </View>
-                )}
+                renderItem={({item,index}) => {
+                    const timeOptions = {hour:"2-digit", minute:"2-digit"}
+                    const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions) 
+
+                        return(
+                            <View style={[styles.forecastItem, styles.borderTest]} key={index}>
+                                
+                                <View style={{borderWidth:1, borderColor:"red", width:"25%", alignItems:"center"}}>
+                                    <Text>{getTime}</Text>
+                                </View>
+                                
+                                <View style={{borderWidth:1, borderColor:"red", width:"25%", alignItems:"center"}}>
+                                    <Text>{item.main.temp}&#176;c</Text>
+                                </View>
+
+                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"25%"}}>
+                                    <Text>Icon</Text>
+                                    <Text style={{textAlign:"center"}}>{item.weather[0].description}</Text>
+                                </View>
+
+                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"25%"}}>
+                                    <Text>Humidity</Text>
+                                    <Text>{item.main.humidity}%</Text>
+                                </View>
+
+                            </View>
+                        )
+                    }
+                }
                 />
             </View>
-            {/* <View style={styles.forecastContainer}>
-                <Text>forecasts</Text>
-            </View> */}
+
             
     
 {/* </ScrollView> */}
@@ -267,7 +264,9 @@ const styles = StyleSheet.create({
     },
 
     forecastItem:{
-
+        justifyContent:"space-between",
+        alignItems:"center",
+        flexDirection:"row"
     },
 
     borderTest:{
