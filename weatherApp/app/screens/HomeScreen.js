@@ -31,7 +31,8 @@ function HomeScreen({navigation}) {
         <View><Text>Loading...</Text></View>
     )
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData.list[0].main.temp_max)
+    // console.log(apiData)
+    console.log(apiData.city.sunrise)
     const temp = Math.floor(apiData.list[0].main.temp)
     const minTemp = Math.floor(apiData.list[0].main.temp_min)
     const maxTemp = Math.floor(apiData.list[0].main.temp_max)
@@ -39,9 +40,12 @@ function HomeScreen({navigation}) {
     const citName = apiData.city.name
     const description = apiData.list[0].weather[0].description
     const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
-    const sunrise = apiData.city.sunrise
-    const sunset = apiData.city.sunset
-    
+
+    const sunrise = new Date(apiData.city.sunrise * 1000).toLocaleTimeString('en-GB')    
+    const sunset = new Date(apiData.city.sunset * 1000).toLocaleTimeString('en-GB');
+
+
+
 
 // Static Work
 
@@ -57,10 +61,22 @@ function HomeScreen({navigation}) {
 
             <View style={styles.locationWeatherContainer}>
 {/* 1st Row */}
-                <View style={styles.rowStyle}> 
+                {/* <View style={styles.rowStyle}> 
                     <MatIcons name='loop' size={16} color='white' />
                     <Text style={{paddingLeft:10}}>Updated a moment ago</Text>
-                </View>
+                </View> */}
+
+               <View style={[styles.rowStyle, styles.sun]}>
+                    <View style={{fontSize:15, color:colours.white, flexDirection:"row"}}>
+                        <FeatherIcons name="sunrise" size={20} color="white" /> 
+                        <Text style={{marginLeft:10, color:colours.white }}>{sunrise}</Text>
+                    </View>
+
+                    <View style={{fontSize:15, flexDirection:"row"}}>
+                        <FeatherIcons name="sunset" size={20} color="white" /> 
+                        <Text style={{marginLeft:10, color:colours.white }}>{sunset}</Text>
+                    </View>
+               </View>
 {/* 2nd Row */}
                 <View style={styles.rowStyle}>
                     <Text style={{fontSize:35}}>{citName}</Text>
@@ -70,7 +86,6 @@ function HomeScreen({navigation}) {
 
                 <View style={[styles.rowStyle, styles.forecastPeriod]}>
                     <Text style={{fontSize:20}}>Next Hour</Text>
-                    <Text style={{fontSize:11}}>{sunrise} - {sunset}</Text>
                 </View>
 {/* 4th Row */}
 
@@ -155,6 +170,12 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:"center",
         marginBottom:10,
+    },
+    sun:{
+        alignItems:"center", 
+        flexDirection:"row",
+        justifyContent:"space-evenly", 
+        width:"100%", 
     },
     forecastContainer:{
         flex:1,            
