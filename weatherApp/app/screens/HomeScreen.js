@@ -138,23 +138,30 @@ function HomeScreen({navigation}) {
                     const timeOptions = {hour:"2-digit", minute:"2-digit"}
                     const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions) 
 
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    const getDay = new Date(item.dt * 1000).toLocaleDateString([], options) 
+
                         return(
                             <View style={[styles.forecastItem, styles.borderTest]} key={index}>
                                 
-                                <View style={{borderWidth:1, borderColor:"red", width:"25%", alignItems:"center"}}>
+                                <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
+                                    <Text>{getDay}</Text>
+                                </View>
+
+                                <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
                                     <Text>{getTime}</Text>
                                 </View>
                                 
-                                <View style={{borderWidth:1, borderColor:"red", width:"25%", alignItems:"center"}}>
+                                <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
                                     <Text>{item.main.temp}&#176;c</Text>
                                 </View>
 
-                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"25%"}}>
+                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"20%"}}>
                                     <Text>Icon</Text>
                                     <Text style={{textAlign:"center"}}>{item.weather[0].description}</Text>
                                 </View>
 
-                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"25%"}}>
+                                <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"20%"}}>
                                     <Text>Humidity</Text>
                                     <Text>{item.main.humidity}%</Text>
                                 </View>
