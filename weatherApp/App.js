@@ -13,6 +13,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 // Screens
 import HomeScreen from './app/screens/HomeScreen'
 import About from './app/screens/About.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Test = ({route}) =>{
   return(
@@ -99,6 +100,8 @@ export default function App() {
 //
 
   return (
+    
+
     <NavigationContainer >
         <Drawer.Navigator screenOptions={{ headerShown:false}}>
           <Drawer.Screen name="HomeScreen2" component={TabsScreen} />
@@ -132,6 +135,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
     backgroundColor: colours.white,
     alignItems: 'center',
     justifyContent: 'center',

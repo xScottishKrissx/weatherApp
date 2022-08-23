@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
 import {useEffect, useState} from 'react'
 import colours from '../config/colours'
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -33,20 +33,23 @@ function HomeScreen({navigation}) {
     )
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log(apiData)
-    console.log(apiData.list[0])
+    // console.log(apiData.list[0])
     
     
-    // console.log(apiData.list[0].main.temp)
-    const getObjects = apiData.list.slice(0,40).map((x,index) =>{
-        // return console.log(x.dt_txt + " - " + x.main.temp + " - " + x.weather[0].description + " - " + x.main.humidity + "%")
-        return console.log(`${x.dt.txt} - ${x.main.temp} - ${x.weather[0].description} - ${x.main.humidity}`)
-    })
-    // console.log(getObjects)
+    console.log(apiData.list[0].main.temp)
+    let newArrayThing = []
+    const getForecast = apiData.list.slice(0,23).map((x,index) =>{
+        return (
+            <View style={[styles.forecastItem, styles.borderTest]} key={index}>
+                <Text>Time: {x.dt_txt}</Text>
+                <Text>Temp: {x.main.temp}</Text>
+                <Text>Description: {x.weather[0].description}</Text>
+                <Text>Humidity: {x.main.humidity}%</Text>
+            </View>
+        )
+    })   
+    
 
-
-
-    
-    
 
     const temp = Math.floor(apiData.list[0].main.temp)
     const minTemp = Math.floor(apiData.list[0].main.temp_min)
@@ -65,6 +68,12 @@ function HomeScreen({navigation}) {
 // Static Work
 
     return (
+        <>
+        {/* <ScrollView> */}
+
+        
+        
+
         <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
             
             <View style={styles.headerContainer}>
@@ -130,7 +139,7 @@ function HomeScreen({navigation}) {
                 {/* Nav */}
                 {/* <Text>-- Nav Test --</Text>
                 <Text onPress={()=>navigation.push("AboutScreen")}>Navigate To About Screen</Text>
-                <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text> */}
+            <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text> */}
 
                 {/* Navigate across stacks Home to About */}
                 {/* <Text onPress={()=>{
@@ -140,12 +149,26 @@ function HomeScreen({navigation}) {
                     })
                 }}>Go Directly To Test 2 in About</Text> */}
             <Text style={{fontSize:20}}>Future Forecast</Text>
+ 
+            <Text>Get Forecast</Text>
+            {getForecast}
             </View>
             {/* <View style={styles.forecastContainer}>
                 <Text>forecasts</Text>
             </View> */}
             
         </ImageBackground>
+    
+{/* </ScrollView> */}
+        <FlatList
+                        data={apiData.list}
+                        renderItem={({item}) =>(
+                            <View>
+                                <Text>{item.main.temp}</Text>
+                            </View>
+                        )}
+                    />
+            </>
     );
 }
 
@@ -238,8 +261,12 @@ const styles = StyleSheet.create({
         width:"50%", 
     },
 
+    forecastItem:{
+
+    },
+
     borderTest:{
-        // borderWidth:1,
+        borderWidth:1,
         borderColor:"red",
     }
     
