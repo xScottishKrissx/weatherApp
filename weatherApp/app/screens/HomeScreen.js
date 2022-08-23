@@ -68,7 +68,7 @@ function HomeScreen({navigation}) {
 // Static Work
 
     return (
-        <>
+        <View style={styles.container}>
         {/* <ScrollView> */}
 
         
@@ -151,24 +151,29 @@ function HomeScreen({navigation}) {
             <Text style={{fontSize:20}}>Future Forecast</Text>
  
             <Text>Get Forecast</Text>
-            {getForecast}
+            {/* {getForecast} */}
+            <FlatList
+                // numColumns={2}
+                style={{flex:1, borderWidth:1, borderColor:"red", width:"100%"}}
+                data={apiData.list}
+                renderItem={({item,index}) =>(
+                    <View style={[styles.forecastItem, styles.borderTest]} key={index}>
+                        <Text>Time: {item.dt_txt}</Text>
+                        <Text>Temp: {item.main.temp}</Text>
+                        <Text>Description: {item.weather[0].description}</Text>
+                        <Text>Humidity: {item.main.humidity}%</Text>
+                    </View>
+                )}
+                />
             </View>
             {/* <View style={styles.forecastContainer}>
                 <Text>forecasts</Text>
             </View> */}
             
-        </ImageBackground>
     
 {/* </ScrollView> */}
-        <FlatList
-                        data={apiData.list}
-                        renderItem={({item}) =>(
-                            <View>
-                                <Text>{item.main.temp}</Text>
-                            </View>
-                        )}
-                    />
-            </>
+                        </ImageBackground>
+            </View>
     );
 }
 
