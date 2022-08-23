@@ -31,8 +31,10 @@ function HomeScreen({navigation}) {
         <View><Text>Loading...</Text></View>
     )
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData.city.sunrise)
+    console.log(apiData.list[0].main.temp_max)
     const temp = Math.floor(apiData.list[0].main.temp)
+    const minTemp = Math.floor(apiData.list[0].main.temp_min)
+    const maxTemp = Math.floor(apiData.list[0].main.temp_max)
     const humidity = apiData.list[0].main.humidity
     const citName = apiData.city.name
     const description = apiData.list[0].weather[0].description
@@ -72,21 +74,25 @@ function HomeScreen({navigation}) {
                 </View>
 {/* 4th Row */}
 
-                <View style={[styles.rowStyle, styles.weatherReport]}>
+                <View style={[styles.rowStyle, styles.weatherReport, styles.borderTest]}>
 
-                        <Text><FeatherIcons name="cloud" size={180} color="white" /></Text>
-
-                        <View>
-                            <Text style={{fontSize:50, color:"white", fontWeight:"900",}}>{temp}&#176;</Text>
-                            <View>
-                                
-                                <Text>Humidity: {humidity}%</Text>
-                                <Text><FeatherIcons name="wind" size={32} color="white" />{windSpeed}mph</Text>
-                            </View>
+                        <View style={[styles.tempDisplay, styles.borderTest]}>
+                            <Text style={styles.borderTest}><FeatherIcons name="cloud" size={100} color="white" /></Text>
+                            <Text style={{fontSize:50, color:"white", fontWeight:"900"}}>{temp}&#176;</Text>
                         </View>
+
+                        <Text style={[styles.descriptionDisplay, styles.borderTest]}>{description}</Text>
+
+
+                        <View style={[styles.extraInformation, styles.borderTest]}>
+                            <Text style={styles.extraInformationDisplayText}>Min Temp: {minTemp}&#176;</Text>
+                            <Text style={styles.extraInformationDisplayText}>Max Temp: {maxTemp}&#176;</Text>
+                            <Text style={styles.extraInformationDisplayText}>Humidity: {humidity}%</Text>
+                            <Text style={styles.extraInformationDisplayText}>Wind Speed: {windSpeed}mph</Text>
+                        </View>
+
                 </View>
 {/* 5th Row */}
-                <Text style={{justifyContent:"center", color:"white", textAlign:"center"}}>{description}</Text>
                 {/* There are not weather warnings in openWeatherAPi */}
                 {/* <Text>Weather Warnings</Text> */}
 
@@ -104,8 +110,8 @@ function HomeScreen({navigation}) {
                         params:{name:"Test 2 Header"}
                     })
                 }}>Go Directly To Test 2 in About</Text> */}
+            <Text style={{fontSize:20}}>Future Forecast</Text>
             </View>
-
             {/* <View style={styles.forecastContainer}>
                 <Text>forecasts</Text>
             </View> */}
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     rowStyle:{
         flexDirection:'row',
         alignItems:"center",
-        marginBottom:10
+        marginBottom:10,
     },
     forecastContainer:{
         flex:1,            
@@ -166,8 +172,39 @@ const styles = StyleSheet.create({
         flexDirection:"column",
         // backgroundColor:"red",
     },
+    descriptionDisplay:{
+        color:"white", 
+        justifyContent:"center", 
+        textAlign:"center",
+        marginTop:20,
+        marginBottom:20
+    },
+
+    tempDisplay:{
+        // backgroundColor:"red",
+        // marginLeft:15
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"space-evenly",
+        width:"100%"
+    },  
+
+    extraInformation:{
+        // backgroundColor:"red",
+        alignItems:"center", 
+        justifyContent:"space-between", 
+        flexDirection:"row",
+        flexWrap:"wrap",
+        width:"100%"
+    },
+    extraInformationDisplayText:{
+        color:colours.white, 
+        textAlign:"center",
+        width:"50%", 
+    },
+
     borderTest:{
-        borderWidth:1,
+        // borderWidth:1,
         borderColor:"red",
     }
     
