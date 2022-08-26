@@ -15,6 +15,11 @@ import HomeScreen from './app/screens/HomeScreen'
 import About from './app/screens/About.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
+if(Platform.OS === 'android') { // only android needs polyfill
+  require('intl'); // import intl object
+  require('intl/locale-data/jsonp/en-IN'); // load the required locale details
+}
+
 const Test = ({route}) =>{
   return(
     <View>
