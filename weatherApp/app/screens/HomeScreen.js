@@ -9,6 +9,7 @@ import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
 
 
+
 function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
@@ -135,17 +136,27 @@ function HomeScreen({navigation}) {
                 style={{flex:1, borderWidth:1, borderColor:"red", width:"100%"}}
                 data={apiData.list}
                 renderItem={({item,index}) => {
+                    
+                    // Date
+                    const months = ["January, February", "March", "April", "May", "June","July", "August","September","October", "November","December"]
+                    const getDay = new Date(item.dt * 1000).getDate() 
+                    const getMonth = new Date(item.dt * 1000).getMonth()  + 1
+
+                    // Time
                     const timeOptions = {hour:"2-digit", minute:"2-digit"}
                     const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions) 
+                    // // const getDay = new Date(item.dt * 1000).toLocaleDateString([], options) 
 
-                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                    const getDay = new Date(item.dt * 1000).toLocaleDateString([], options) 
+                    
+                    
 
-                        return(
+                 
+                    return(
+                        
                             <View style={[styles.forecastItem, styles.borderTest]} key={index}>
                                 
                                 <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
-                                    <Text>{getDay}</Text>
+                                    <Text>{getDay} {months[getMonth]}</Text>
                                 </View>
 
                                 <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
@@ -169,6 +180,7 @@ function HomeScreen({navigation}) {
                             </View>
                         )
                     }
+                    
                 }
                 />
             </View>
