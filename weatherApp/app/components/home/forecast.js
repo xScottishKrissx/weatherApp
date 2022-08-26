@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
 import colours from '../../config/colours';
 
 export default function Forecast({apiData}) {
@@ -8,7 +8,7 @@ export default function Forecast({apiData}) {
         <Text style={{fontSize:20}}>Forecast</Text>
         <FlatList
             // numColumns={2}
-            style={{flex:1, borderWidth:1, borderColor:"red", width:"100%"}}
+            style={{flex:1, width:"100%"}}
             data={apiData.list}
             renderItem={({item,index}) => {
                 
@@ -29,35 +29,43 @@ export default function Forecast({apiData}) {
                         
                 // Time            
                 const timeOptions = {hour:"numeric", hour12:true }
-                const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions) 
+                const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions)
 
+                const {temp, humidity} = item.main
+                const{description} = item.weather[0]
+
+                const icon = apiData.list[index].weather[0].icon
+                console.log(icon)
+                // if(getTime.includes("AM"))icon.replace('d', 'n')
+                // if(getTime.includes("PM"))icon.replace('n', 'd')
+                
+                
+                
 
                 return(
                     
-                        <View style={[styles.forecastItem, styles.borderTest]} key={index}>
+                        <View style={[styles.forecastItemRow]} key={index}>
                             
-                            <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
+                            <View style={styles.forecastItem}>
                                 <Text>{displayDate}</Text>
-                                {/* <Text>{getDay} {months[getMonth]}</Text> */}
-                                {/* <Text>{thing} </Text> */}
                             </View>
 
-                            <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
+                            <View style={styles.forecastItem}>
                                 <Text>{getTime}</Text>
                             </View>
                             
-                            <View style={{borderWidth:1, borderColor:"red", width:"20%", alignItems:"center"}}>
-                                <Text>{item.main.temp}&#176;c</Text>
+                            <View style={styles.forecastItem}>
+                                <Text>{temp}&#176;c</Text>
                             </View>
 
-                            <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"20%"}}>
-                                <Text>Icon</Text>
-                                <Text style={{textAlign:"center"}}>{item.weather[0].description}</Text>
+                            <View style={styles.forecastItem}>
+                                {/* <Text style={{textAlign:"center"}}>{description}</Text> */}
+                                <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:50, height:50}} />
                             </View>
 
-                            <View style={{alignItems:"center", borderWidth:1, borderColor:"red", width:"20%"}}>
+                            <View style={styles.forecastItem}>
                                 <Text>Humidity</Text>
-                                <Text>{item.main.humidity}%</Text>
+                                <Text>{humidity}%</Text>
                             </View>
 
                         </View>
@@ -71,12 +79,15 @@ export default function Forecast({apiData}) {
   )
 }
 const styles = StyleSheet.create({
-    forecastItem:{
+    forecastItemRow:{
         justifyContent:"space-between",
         alignItems:"center",
         flexDirection:"row"
     },
-
+    forecastItem:{
+        alignItems:"center",
+        width:"20%"
+    },
     borderTest:{
         borderWidth:1,
         borderColor:"red",

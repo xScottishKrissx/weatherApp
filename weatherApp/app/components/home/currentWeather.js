@@ -1,11 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
 import colours from '../../config/colours';
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
 
+
+
 export default function CurrentWeather({apiData}) {
-    
+
     const citName = apiData.city.name
     const temp = Math.floor(apiData.list[0].main.temp)
     const minTemp = Math.floor(apiData.list[0].main.temp_min)
@@ -13,6 +15,7 @@ export default function CurrentWeather({apiData}) {
     const humidity = apiData.list[0].main.humidity
     const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
     const description = apiData.list[0].weather[0].description
+    const icon = apiData.list[0].weather[0].icon
 
   return (
     <>
@@ -26,17 +29,23 @@ export default function CurrentWeather({apiData}) {
             <Text style={{fontSize:20}}>Current</Text>
         </View>
 
-        <View style={[styles.rowStyle, styles.weatherReport, styles.borderTest]}>
+        <View style={[styles.rowStyle, styles.weatherReport]}>
 
-                <View style={[styles.tempDisplay, styles.borderTest]}>
-                    <Text style={styles.borderTest}><FeatherIcons name="cloud" size={100} color="white" /></Text>
+                <View style={[styles.tempDisplay]}>
+                    {/* <Text style={styles.borderTest}><FeatherIcons name="cloud" size={100} color="white" /></Text> */}
+                    <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:100, height:100}} />
                     <Text style={{fontSize:50, color:"white", fontWeight:"900"}}>{temp}&#176;</Text>
                 </View>
 
-                <Text style={[styles.descriptionDisplay, styles.borderTest]}>{description}</Text>
+                <View style={[styles.tempDisplay]}>
+                    <Text style={{fontSize:40, color:"white", fontWeight:"900"}}>{description}</Text>
+                    {/* <Text style={{fontSize:40, color:"white", fontWeight:"900"}}>thunderstorm with heavy drizzle</Text> */}
+                </View>
+
+                {/* <Text style={[styles.descriptionDisplay, styles.borderTest]}>{description}</Text> */}
 
 
-                <View style={[styles.extraInformation, styles.borderTest]}>
+                <View style={[styles.extraInformation]}>
                     <Text style={styles.extraInformationDisplayText}>Min Temp: {minTemp}&#176;</Text>
                     <Text style={styles.extraInformationDisplayText}>Max Temp: {maxTemp}&#176;</Text>
                     <Text style={styles.extraInformationDisplayText}>Humidity: {humidity}%</Text>
@@ -80,7 +89,8 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"space-evenly",
-        width:"100%"
+        width:"100%",
+
     },  
     extraInformation:{
         // backgroundColor:"red",
@@ -88,7 +98,9 @@ const styles = StyleSheet.create({
         justifyContent:"space-between", 
         flexDirection:"row",
         flexWrap:"wrap",
-        width:"100%"
+        width:"100%",
+        paddingTop:10,
+        paddingBottom:10
     },
     extraInformationDisplayText:{
         color:colours.white, 

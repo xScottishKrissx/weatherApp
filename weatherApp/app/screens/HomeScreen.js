@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
 import {useEffect, useState} from 'react'
 import colours from '../config/colours'
 // Components
@@ -33,12 +33,12 @@ function HomeScreen({navigation}) {
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData.list[0].main.temp)
-
+    console.log(apiData.list[0].weather[0])
+    // console.log(apiData.list[0].main.temp)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
-                
+
                 <Title navigation={navigation}/>    
 
                 <View style={styles.locationWeatherContainer}>
@@ -72,10 +72,8 @@ const styles = StyleSheet.create({
         width:"100%",
         alignItems:"center",
         blurRadius:1
-        
     },
     locationWeatherContainer:{
-        // backgroundColor:"grey",
         flex:9,
         marginTop:30,
         width:colours.contentAreaWidth
