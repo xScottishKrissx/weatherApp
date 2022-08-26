@@ -3,12 +3,13 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, SectionList, FlatList } from 'react-native';
 import {useEffect, useState} from 'react'
 import colours from '../config/colours'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
-import MatIcons from '@expo/vector-icons/MaterialIcons'
-import FeatherIcons from '@expo/vector-icons/Feather'
+// import Ionicons from '@expo/vector-icons/Ionicons';
+// import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+// import MatIcons from '@expo/vector-icons/MaterialIcons'
+// import FeatherIcons from '@expo/vector-icons/Feather'
 import Title from '../components/home/title';
 import Sunriseset from '../components/home/sunriseset';
+import CurrentWeather from '../components/home/currentWeather';
 
 
 
@@ -44,13 +45,13 @@ function HomeScreen({navigation}) {
     
 
 
-    const temp = Math.floor(apiData.list[0].main.temp)
-    const minTemp = Math.floor(apiData.list[0].main.temp_min)
-    const maxTemp = Math.floor(apiData.list[0].main.temp_max)
-    const humidity = apiData.list[0].main.humidity
-    const citName = apiData.city.name
-    const description = apiData.list[0].weather[0].description
-    const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
+    // const temp = Math.floor(apiData.list[0].main.temp)
+    // const minTemp = Math.floor(apiData.list[0].main.temp_min)
+    // const maxTemp = Math.floor(apiData.list[0].main.temp_max)
+    // const humidity = apiData.list[0].main.humidity
+    // const citName = apiData.city.name
+    // const description = apiData.list[0].weather[0].description
+    // const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
 
     // const sunrise = new Date(apiData.city.sunrise * 1000).toLocaleTimeString('en-GB')    
     // const sunset = new Date(apiData.city.sunset * 1000).toLocaleTimeString('en-GB');
@@ -91,7 +92,8 @@ function HomeScreen({navigation}) {
                     </View>
                </View> */}
                <Sunriseset apiData={apiData.city}/>
-
+               <CurrentWeather apiData={apiData} />
+{/* 
                 <View style={styles.rowStyle}>
                     <Text style={{fontSize:35}}>{citName}</Text>
                     <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
@@ -120,7 +122,7 @@ function HomeScreen({navigation}) {
                             <Text style={styles.extraInformationDisplayText}>Wind Speed: {windSpeed}mph</Text>
                         </View>
 
-                </View>
+                </View> */}
 
                 {/* Nav */}
                 {/* <Text>-- Nav Test --</Text>
