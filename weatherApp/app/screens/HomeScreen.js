@@ -7,6 +7,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
+import Title from '../components/home/title';
+import Sunriseset from '../components/home/sunriseset';
 
 
 
@@ -50,8 +52,8 @@ function HomeScreen({navigation}) {
     const description = apiData.list[0].weather[0].description
     const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
 
-    const sunrise = new Date(apiData.city.sunrise * 1000).toLocaleTimeString('en-GB')    
-    const sunset = new Date(apiData.city.sunset * 1000).toLocaleTimeString('en-GB');
+    // const sunrise = new Date(apiData.city.sunrise * 1000).toLocaleTimeString('en-GB')    
+    // const sunset = new Date(apiData.city.sunset * 1000).toLocaleTimeString('en-GB');
 
 
 
@@ -63,12 +65,13 @@ function HomeScreen({navigation}) {
 
         <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
             
-            <View style={styles.headerContainer}>
+            {/* <View style={styles.headerContainer}>
                 <MatIcons name='menu' size={32} color='white' onPress={()=>navigation.toggleDrawer()}/>
                 <Text style={styles.headerContainerHeading}>The Weather</Text>
                 <MatIcons name='search' size={32} color='white' />
-            </View>        
-
+            </View>     */}
+            <Title navigation={navigation}/>    
+            
             <View style={styles.locationWeatherContainer}>
 {/* 1st Row */}
                 {/* <View style={styles.rowStyle}> 
@@ -76,7 +79,7 @@ function HomeScreen({navigation}) {
                     <Text style={{paddingLeft:10}}>Updated a moment ago</Text>
                 </View> */}
 
-               <View style={[styles.rowStyle, styles.sun]}>
+               {/* <View style={[styles.rowStyle, styles.sun]}>
                     <View style={{fontSize:15, color:colours.white, flexDirection:"row"}}>
                         <FeatherIcons name="sunrise" size={20} color="white" /> 
                         <Text style={{marginLeft:10, color:colours.white }}>{sunrise}</Text>
@@ -86,7 +89,8 @@ function HomeScreen({navigation}) {
                         <FeatherIcons name="sunset" size={20} color="white" /> 
                         <Text style={{marginLeft:10, color:colours.white }}>{sunset}</Text>
                     </View>
-               </View>
+               </View> */}
+               <Sunriseset apiData={apiData.city}/>
 
                 <View style={styles.rowStyle}>
                     <Text style={{fontSize:35}}>{citName}</Text>
