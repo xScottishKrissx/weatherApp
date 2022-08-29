@@ -5,17 +5,17 @@ import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
 
 
-
+function formatTemp(temperature){ return Math.floor(temperature) }
 export default function CurrentWeather({apiData}) {
 
     const citName = apiData.city.name
-    const temp = Math.floor(apiData.list[0].main.temp)
-    const minTemp = Math.floor(apiData.list[0].main.temp_min)
-    const maxTemp = Math.floor(apiData.list[0].main.temp_max)
-    const humidity = apiData.list[0].main.humidity
-    const windSpeed = Math.floor(apiData.list[0].wind.gust * 2.237)
-    const description = apiData.list[0].weather[0].description
-    const icon = apiData.list[0].weather[0].icon
+    
+    const {temp, temp_max, temp_min, humidity, feels_like} = apiData.list[0].main
+
+    const {gust} = apiData.list[0].wind 
+    const windSpeed = Math.floor(gust * 2.237)
+    
+    const {description, icon} = apiData.list[0].weather[0]
 
   return (
     <>
@@ -34,7 +34,7 @@ export default function CurrentWeather({apiData}) {
                 <View style={[styles.tempDisplay]}>
                     {/* <Text style={styles.borderTest}><FeatherIcons name="cloud" size={100} color="white" /></Text> */}
                     <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:100, height:100}} />
-                    <Text style={{fontSize:50, color:"white", fontWeight:"900"}}>{temp}&#176;</Text>
+                    <Text style={{fontSize:50, color:"white", fontWeight:"900"}}>{formatTemp(temp)}&#176;</Text>
                 </View>
 
                 <View style={[styles.tempDisplay]}>
@@ -46,10 +46,11 @@ export default function CurrentWeather({apiData}) {
 
 
                 <View style={[styles.extraInformation]}>
-                    <Text style={styles.extraInformationDisplayText}>Min Temp: {minTemp}&#176;</Text>
-                    <Text style={styles.extraInformationDisplayText}>Max Temp: {maxTemp}&#176;</Text>
+                    <Text style={styles.extraInformationDisplayText}>Min Temp: {formatTemp(temp_min)}&#176;</Text>
+                    <Text style={styles.extraInformationDisplayText}>Max Temp: {formatTemp(temp_max)}&#176;</Text>
                     <Text style={styles.extraInformationDisplayText}>Humidity: {humidity}%</Text>
                     <Text style={styles.extraInformationDisplayText}>Wind Speed: {windSpeed}mph</Text>
+                    <Text style={styles.extraInformationDisplayText}>Feels Like: {formatTemp(feels_like)}&#176;</Text>
                 </View>
         </View>
 

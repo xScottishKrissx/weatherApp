@@ -33,7 +33,7 @@ function HomeScreen({navigation}) {
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData.list[0].weather[0])
+    console.log(apiData.list[0])
     // console.log(apiData.list[0].main.temp)
     return (
         <View style={styles.container}>

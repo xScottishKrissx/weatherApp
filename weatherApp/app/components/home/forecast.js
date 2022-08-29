@@ -2,20 +2,14 @@ import React,{useState, useRef, useEffect} from 'react'
 import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, SectionList, FlatList, TouchableOpacity } from 'react-native';
 import colours from '../../config/colours';
 
+function formatTemp(temperature){ return Math.floor(temperature) }
+function formatWind(windSpeed){return Math.floor(windSpeed * 2.237) }
+
 export default function Forecast({apiData}) {
     // const [toggleExtraInfo, setTogggleExtraInfo] = useState(false)
 
-    const forecastRef = useRef(null)
-
-    // useEffect(() =>{
-    //     console.log(forecastRef)
-    // },[forecastRef])
-    // const onPress = () => setTogggleExtraInfo(true)
-
     const [isActive, setIsActive] = useState(false)
     function toggleQuestions(questionIndex){
-        // console.log(isActive + " r" + questionIndex)
-
         if(isActive === questionIndex){
             setIsActive(false)
         }else{
@@ -52,70 +46,102 @@ export default function Forecast({apiData}) {
                 // Time            
                 const timeOptions = {hour:"numeric", hour12:true }
                 const getTime = new Date(item.dt * 1000).toLocaleTimeString([], timeOptions)
-
-                const {temp, humidity} = item.main
+                
+                // API data
+                const {temp, humidity, temp_max, temp_min, feels_like} = item.main
                 const {description} = item.weather[0]
-
                 const icon = apiData.list[index].weather[0].icon
-                // console.log(icon)
-                // if(getTime.includes("AM"))icon.replace('d', 'n')
-                // if(getTime.includes("PM"))icon.replace('n', 'd')
-                
-                
-                // const thingy = index === isActive ? "showRow" : null
-
+               
                 return(
                     <TouchableOpacity onPress={()=> toggleQuestions(index)} activeOpacity={2}>
-
-                       
-
-                        <View style={[styles.forecastItemRow, index === isActive ? styles.showRow : null ]} ref={forecastRef} key={index} onPress={() => toggleQuestions(index)}>
-                        {/* <View style={[styles.forecastItemRow]} ref={forecastRef} key={index} onPress={() => toggleQuestions(index)}> */}
-                        {/* <View style={[styles.forecastItemrow],`forecastItemRow ${index === toggleExtraInfo? "showRow" : null}`} ref={forecastRef} key={index}> */}
-                                
-                                <View style={styles.forecastItem}>
-                                    <Text>{displayDate}</Text>
-                                </View>
-
-                                <View style={styles.forecastItem}>
-                                    <Text>{getTime}</Text>
-                                </View>
-                                
-                                <View style={styles.forecastItem}>
-                                    <Text>{temp}&#176;c</Text>
-                                    {index === isActive ? <Text style={{fontSize:10}}>Feels like 15</Text> : null}
+                        <View style={[styles.forecastItemRowWrapper]}>
+                            {/* Visible */}
+                            <View 
+                                style={[
+                                    styles.forecastItemRow,
                                     
+                                    styles.visibleData,
+                                    index === isActive ? styles.showRow : null 
+                                ]} 
+                                key={index} 
+                                onPress={() => toggleQuestions(index)}
+                            >
+                                <View style={styles.forecastItem}> 
+                                    <Text style={styles.visibleForecastItemText}>{displayDate}</Text> 
+                                </View>
+
+                                <View style={styles.forecastItem}> 
+                                    <Text style={styles.visibleForecastItemText}>{getTime}</Text> 
+                                </View>
+
+                                <View style={styles.forecastItem}> 
+                                    <Text style={styles.visibleForecastItemText}>{formatTemp(temp)}&#176;c</Text> 
                                 </View>
 
                                 <View style={styles.forecastItem}>
                                     <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:50, height:50}} />
-                                    <Text style={{textAlign:"center", fontSize:10, opacity:0}}>{description}</Text>
+                                </View>
+                                
+                                <View style={styles.forecastItem}>
+                                    <Text style={styles.visibleForecastItemText}>{humidity}%</Text>
+                                </View>
+
+                            </View>    
+                            {/* Hidden */}
+                            <View style={[styles.hiddenData, index === isActive ? styles.showHiddenData : null ]}>
+                                <View style={styles.forecastItem}>
+                                    <Text style={styles.hiddenForecastItemText}>Min</Text>
+                                    <Text style={styles.hiddenForecastItemText}>{formatTemp(temp_min)}&#176;</Text>
+                                </View>
+                                <View style={styles.forecastItem}>
+                                    <Text style={styles.hiddenForecastItemText}>Max</Text>
+                                    <Text style={styles.hiddenForecastItemText}>{formatTemp(temp_max)}&#176;</Text>
                                 </View>
 
                                 <View style={styles.forecastItem}>
-                                    <Text>{humidity}%</Text>
-                                    <Text style={{fontSize:10, opacity:0}}>Humidity</Text>
+                                    <Text style={styles.hiddenForecastItemText}>Feels</Text>
+                                    <Text style={styles.hiddenForecastItemText}>{formatTemp(feels_like)}&#176;</Text>
                                 </View>
-
+                                <View style={styles.forecastItem}>
+                                    <Text style={styles.hiddenForecastItemText}>{description}</Text>
+                                </View>
+                                <View style={styles.forecastItem}>
+                                    <Text style={styles.hiddenForecastItemText}>Wind</Text>
+                                    <Text style={styles.hiddenForecastItemText}>{formatWind(item.wind.gust)}mph</Text>
+                                </View>
                             </View>
-                        </TouchableOpacity>
+
+                        
+
+                        </View>
+                    </TouchableOpacity>
                     )
                 }
                 
             }
             />
-
-    </>
-  )
-}
+            
+            </>
+            )
+        }
 const styles = StyleSheet.create({
+    forecastItemRowWrapper:{
+        // backgroundColor:"blue",
+        justifyContent:"space-between",
+        // alignItems:"center",
+        flexDirection:"column",
+    
+        
+    },  
     forecastItemRow:{
         justifyContent:"space-between",
         alignItems:"center",
         flexDirection:"row"
     },
     forecastItem:{
+       
         alignItems:"center",
+        textAlign:'center',
         width:"20%"
     },
     borderTest:{
@@ -123,7 +149,31 @@ const styles = StyleSheet.create({
         borderColor:"red",
     },
     showRow:{
-        height:100,
-        backgroundColor:"red"
+        height:50,
+        // backgroundColor:"green",
+        opacity:1,
+        
+        borderLeftWidth:1,
+        borderTopWidth:1,
+        borderRightWidth:1,
+        borderColor:"grey",
+        
+    },
+    hiddenData:{
+        flexDirection:"row",
+        display:"none",
+        opacity:0
+    },
+    showHiddenData:{
+        backgroundColor:"grey",
+        display:"flex",
+        opacity: 1,
+        color:"white"
+    },
+    visibleForecastItemText:{
+        color:"black"
+    },
+    hiddenForecastItemText:{
+        color:colours.white
     }
 })
