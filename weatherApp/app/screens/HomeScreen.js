@@ -16,6 +16,7 @@ function HomeScreen({navigation}) {
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [count, setCount] = useState(0)
 
     useEffect(() => {
         fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
@@ -29,11 +30,13 @@ function HomeScreen({navigation}) {
         .catch(error => console.log(error))
         
     }, [])
+
+    const testButton = () => setCount(count + 1)
     
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData.list[0])
+    // console.log(apiData.list[0])
     // console.log(apiData.list[0].main.temp)
     return (
         <View style={styles.container}>
@@ -43,6 +46,7 @@ function HomeScreen({navigation}) {
 
                 <View style={styles.locationWeatherContainer}>
                     <Sunriseset apiData={apiData.city}/>
+                    <Text onPress={()=>testButton()}>BUTTON - {count}</Text>
                     <CurrentWeather apiData={apiData} />
                     <Forecast apiData={apiData} />
 
