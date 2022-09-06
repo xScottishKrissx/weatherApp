@@ -1,12 +1,22 @@
-import React, { memo } from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, SectionList, FlatList, TouchableOpacity } from 'react-native';
+import React, {useState, memo } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import colours from '../../config/colours';
 
 function formatTemp(temperature){ return Math.floor(temperature) }
 function formatWind(windSpeed){return Math.floor(windSpeed * 2.237) }
 
-const ForecastRow = ({item}) => {
-    console.log("ForecastRow.js")
+const ForecastRow = ({item, index}) => {
+
+    const [isActive, setIsActive] = useState(false)
+    function toggleQuestions(questionIndex){
+        if(isActive === questionIndex){
+            setIsActive(false)
+        }else{
+            setIsActive(questionIndex)
+        }
+    }
+
+    // console.log("ForecastRow.js")
     const dateOptions = {weekday:"short"}
     const getDate = new Date(item.dt * 1000).toLocaleDateString([], dateOptions)
 
@@ -29,11 +39,11 @@ const ForecastRow = ({item}) => {
     // API data
     const {temp, humidity, temp_max, temp_min, feels_like} = item.main
     const {description} = item.weather[0]
-    // const icon = apiData.list[index].weather[0].icon
+    const icon = item.weather[0].icon
    
     return(
         <TouchableOpacity 
-            // onPress={()=> toggleQuestions(index)} 
+            onPress={()=> toggleQuestions(index)} 
             activeOpacity={2}
             >
             <View style={[styles.forecastItemRowWrapper]}>
@@ -43,7 +53,7 @@ const ForecastRow = ({item}) => {
                         styles.forecastItemRow,
                         
                         styles.visibleData,
-                        // index === isActive ? styles.showRow : null 
+                        index === isActive ? styles.showRow : null 
                     ]} 
                     // key={index} 
                     // onPress={() => toggleQuestions(index)}
@@ -61,7 +71,7 @@ const ForecastRow = ({item}) => {
                     </View>
 
                     <View style={styles.forecastItem}>
-                        {/* <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:50, height:50}} /> */}
+                        <Image source={{uri:'http://openweathermap.org/img/wn/' + icon + '@2x.png'}} style={{width:50, height:50}} />
                     </View>
                     
                     <View style={styles.forecastItem}>
@@ -71,7 +81,7 @@ const ForecastRow = ({item}) => {
                 </View>    
                 
                 <View 
-                    // style={[styles.hiddenData, index === isActive ? styles.showHiddenData : null ]}
+                    style={[styles.hiddenData, index === isActive ? styles.showHiddenData : null ]}
                     >
                     <View style={styles.forecastItem}>
                         <Text style={styles.hiddenForecastItemText}>Min</Text>
