@@ -1,6 +1,6 @@
 import React, {useState, memo } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import colours from '../../config/colours';
+import colours from '../../../config/colours';
 
 function formatTemp(temperature){ return Math.floor(temperature) }
 function formatWind(windSpeed){return Math.floor(windSpeed * 2.237) }
@@ -16,7 +16,6 @@ const ForecastRow = ({item, index}) => {
         }
     }
 
-    // console.log("ForecastRow.js")
     const dateOptions = {weekday:"short"}
     const getDate = new Date(item.dt * 1000).toLocaleDateString([], dateOptions)
 
@@ -51,12 +50,10 @@ const ForecastRow = ({item, index}) => {
                 <View 
                     style={[
                         styles.forecastItemRow,
-                        
                         styles.visibleData,
                         index === isActive ? styles.showRow : null 
                     ]} 
-                    // key={index} 
-                    // onPress={() => toggleQuestions(index)}
+
                 >
                     <View style={styles.forecastItem}> 
                         <Text style={styles.visibleForecastItemText}>{displayDate}</Text> 
@@ -113,7 +110,6 @@ const ForecastRow = ({item, index}) => {
 }
 
 export default memo(ForecastRow)
-// export default ForecastRow
 
 const styles = StyleSheet.create({
     forecastItemRowWrapper:{

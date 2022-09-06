@@ -7,16 +7,13 @@ import colours from '../config/colours'
 import Title from '../components/home/title';
 import Sunriseset from '../components/home/sunriseset';
 import CurrentWeather from '../components/home/currentWeather';
-import Forecast from '../components/home/forecast';
-
-
+import Forecast from '../components/home/Forecast/forecast';
 
 function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [count, setCount] = useState(0)
 
     useEffect(() => {
         fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
@@ -31,13 +28,12 @@ function HomeScreen({navigation}) {
         
     }, [])
 
-    const testButton = () => setCount(count + 1)
+
     
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log(apiData.list[0])
-    // console.log(apiData.list[0].main.temp)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
@@ -46,7 +42,6 @@ function HomeScreen({navigation}) {
 
                 <View style={styles.locationWeatherContainer}>
                     <Sunriseset apiData={apiData.city}/>
-                    <Text onPress={()=>testButton()}>BUTTON - {count}</Text>
                     <CurrentWeather apiData={apiData} />
                     <Forecast apiData={apiData} />
 
