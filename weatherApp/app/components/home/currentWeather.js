@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, SectionList
 import colours from '../../config/colours';
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 import FeatherIcons from '@expo/vector-icons/Feather'
+import { TextInput } from 'react-native-gesture-handler';
+import Search from './Search/search';
 
 
 function formatTemp(temperature){ return Math.floor(temperature) }
-export default function CurrentWeather({apiData}) {
+export default function CurrentWeather({apiData, test}) {
 
     const citName = apiData.city.name
     
@@ -19,12 +21,17 @@ export default function CurrentWeather({apiData}) {
 
   return (
     <>
-    
-        <View style={styles.rowStyle}>
-            <Text style={{fontSize:35}}>{citName}</Text>
+        {/* Search Form */}
+        {/* <View style={styles.rowStyle}>
+            <TextInput 
+                onChangeText={(value) => test(value)}
+                placeholder={citName}
+            />
             <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
-        </View>
+        </View> */}
+        <Search currentLocation={citName}/>
 
+{/* Display Current Forecast */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>
             <Text style={{fontSize:20}}>Current</Text>
         </View>

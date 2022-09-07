@@ -14,28 +14,33 @@ function HomeScreen({navigation}) {
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [location, setLocation] = useState("glasgow")
 
     useEffect(() => {
         // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
-        // fetch("http://api.openweathermap.org/geo/1.0/direct?q=glasgow&limit=5&appid=3021873ba7751f7019c80e409b315b6d")
-        fetch("https://api.openweathermap.org/data/2.5/forecast?q=falkirk&appid=3021873ba7751f7019c80e409b315b6d")
+        // fetch("http://api.openweathermap.org/geo/1.0/direct?q=pollok,gb&limit=5&appid=3021873ba7751f7019c80e409b315b6d")
+        
+        fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + location + "&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
         .then(res => {
             return res.json()
         })
         .then(data => {
+            console.log("Fetch Complete")
             setApiData(data)
             setLoading(false)
         } )
+        
         .catch(error => console.log(error))
         
     }, [])
 
 
-    
+    console.log(loading)
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log(apiData)
+    // console.log(apiData.list[0])
+    console.log(location)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
@@ -43,9 +48,9 @@ function HomeScreen({navigation}) {
                 <Title navigation={navigation}/>    
 
                 <View style={styles.locationWeatherContainer}>
-                    {/* <Sunriseset apiData={apiData.city}/>
-                    <CurrentWeather apiData={apiData} />
-                    <Forecast apiData={apiData} /> */}
+                    {/* <Sunriseset apiData={apiData.city}/> */}
+                    <CurrentWeather apiData={apiData} test={setLocation}/>
+                    {/* <Forecast apiData={apiData} /> */}
 
                         {/* Nav */}
                         {/* <Text>-- Nav Test --</Text>
