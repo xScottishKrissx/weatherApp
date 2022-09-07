@@ -1,6 +1,8 @@
 import React, {useState, memo } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import colours from '../../../config/colours';
+import MatIcons from '@expo/vector-icons/MaterialIcons'
+import MatComIcons from "@expo/vector-icons/MaterialCommunityIcons"
 
 function formatTemp(temperature){ return Math.floor(temperature) }
 function formatWind(windSpeed){return Math.floor(windSpeed * 2.237) }
@@ -44,7 +46,7 @@ const ForecastRow = ({item, index}) => {
         <TouchableOpacity 
             onPress={()=> toggleQuestions(index)} 
             activeOpacity={2}
-            >
+        >
             <View style={[styles.forecastItemRowWrapper]}>
                
                 <View 
@@ -53,9 +55,8 @@ const ForecastRow = ({item, index}) => {
                         styles.visibleData,
                         index === isActive ? styles.showRow : null 
                     ]} 
-
                 >
-                    <View style={styles.forecastItem}> 
+                    <View style={[styles.forecastItem]}> 
                         <Text style={styles.visibleForecastItemText}>{displayDate}</Text> 
                     </View>
 
@@ -75,11 +76,15 @@ const ForecastRow = ({item, index}) => {
                         <Text style={styles.visibleForecastItemText}>{humidity}%</Text>
                     </View>
 
+                    <View style={styles.forecastItem}>
+                        <Text style={index !== isActive ? styles.showIcon : styles.hideIcon} >
+                            <MatComIcons name="chevron-down" size={20} color="white" />
+                        </Text>
+                    </View>
+
                 </View>    
                 
-                <View 
-                    style={[styles.hiddenData, index === isActive ? styles.showHiddenData : null ]}
-                    >
+                <View style={[styles.hiddenData, index === isActive ? styles.showHiddenData : null ]}>
                     <View style={styles.forecastItem}>
                         <Text style={styles.hiddenForecastItemText}>Min</Text>
                         <Text style={styles.hiddenForecastItemText}>{formatTemp(temp_min)}&#176;</Text>
@@ -99,6 +104,11 @@ const ForecastRow = ({item, index}) => {
                     <View style={styles.forecastItem}>
                         <Text style={styles.hiddenForecastItemText}>Wind</Text>
                         <Text style={styles.hiddenForecastItemText}>{formatWind(item.wind.gust)}mph</Text>
+                    </View>
+                    <View style={styles.forecastItem}>
+                        <Text>
+                            <MatComIcons name="chevron-up" size={20} color="white" />
+                        </Text>
                     </View>
                 </View>
 
@@ -121,15 +131,19 @@ const styles = StyleSheet.create({
         
     },  
     forecastItemRow:{
-        justifyContent:"space-between",
+        justifyContent:"space-evenly",
         alignItems:"center",
-        flexDirection:"row"
+        flexDirection:"row",
+        
     },
     forecastItem:{
        
         alignItems:"center",
         textAlign:'center',
-        width:"20%"
+        width:"15%",
+
+        // borderWidth:1,
+        // borderColor:"red",
     },
     borderTest:{
         borderWidth:1,
@@ -148,12 +162,14 @@ const styles = StyleSheet.create({
     },
     hiddenData:{
         flexDirection:"row",
+        justifyContent:"space-between",
         display:"none",
         opacity:0
     },
     showHiddenData:{
         backgroundColor:"grey",
         display:"flex",
+        alignItems:"center",
         opacity: 1,
         color:"white"
     },
@@ -162,5 +178,11 @@ const styles = StyleSheet.create({
     },
     hiddenForecastItemText:{
         color:colours.white
+    },
+    showIcon:{
+        display:"flex"
+    },
+    hideIcon:{
+        display:"none"
     }
 })
