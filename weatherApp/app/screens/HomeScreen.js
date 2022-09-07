@@ -16,7 +16,9 @@ function HomeScreen({navigation}) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
+        // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
+        // fetch("http://api.openweathermap.org/geo/1.0/direct?q=glasgow&limit=5&appid=3021873ba7751f7019c80e409b315b6d")
+        fetch("https://api.openweathermap.org/data/2.5/forecast?q=falkirk&appid=3021873ba7751f7019c80e409b315b6d")
         .then(res => {
             return res.json()
         })
@@ -33,7 +35,7 @@ function HomeScreen({navigation}) {
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    // console.log(apiData.list[0])
+    console.log(apiData)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
@@ -41,9 +43,9 @@ function HomeScreen({navigation}) {
                 <Title navigation={navigation}/>    
 
                 <View style={styles.locationWeatherContainer}>
-                    <Sunriseset apiData={apiData.city}/>
+                    {/* <Sunriseset apiData={apiData.city}/>
                     <CurrentWeather apiData={apiData} />
-                    <Forecast apiData={apiData} />
+                    <Forecast apiData={apiData} /> */}
 
                         {/* Nav */}
                         {/* <Text>-- Nav Test --</Text>
