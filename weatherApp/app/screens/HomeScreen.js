@@ -41,6 +41,10 @@ function HomeScreen({navigation}) {
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log(apiData.list[0])
     // console.log(location)
+    const updateData = (a) =>{
+        console.log("City Name: " + a.city.name)
+        setApiData(a)
+    }
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
@@ -49,7 +53,7 @@ function HomeScreen({navigation}) {
 
                 <View style={styles.locationWeatherContainer}>
                     {/* <Sunriseset apiData={apiData.city}/> */}
-                    <CurrentWeather apiData={apiData} test={setLocation}/>
+                    <CurrentWeather apiData={apiData} test={setLocation} setData={updateData}/>
                     {/* <Forecast apiData={apiData} /> */}
 
                         {/* Nav */}

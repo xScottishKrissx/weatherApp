@@ -8,7 +8,7 @@ import Search from './Search/search';
 
 
 function formatTemp(temperature){ return Math.floor(temperature) }
-export default function CurrentWeather({apiData, test}) {
+export default function CurrentWeather({apiData, test, setData}) {
 
     const citName = apiData.city.name
     
@@ -19,9 +19,7 @@ export default function CurrentWeather({apiData, test}) {
     
     const {description, icon} = apiData.list[0].weather[0]
 
-    const setData = (x) =>{
-        console.log("CityName: " + x.city.name)
-    }
+
 
   return (
     <>
