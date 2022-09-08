@@ -19,6 +19,10 @@ export default function CurrentWeather({apiData, test}) {
     
     const {description, icon} = apiData.list[0].weather[0]
 
+    const setData = (x) =>{
+        console.log("CityName: " + x.city.name)
+    }
+
   return (
     <>
         {/* Search Form */}
@@ -29,7 +33,7 @@ export default function CurrentWeather({apiData, test}) {
             />
             <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
         </View> */}
-        <Search currentLocation={citName}/>
+        <Search currentLocation={citName} sendData={setData}/>
 
 {/* Display Current Forecast */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>

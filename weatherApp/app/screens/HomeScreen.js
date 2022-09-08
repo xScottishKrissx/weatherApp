@@ -40,7 +40,7 @@ function HomeScreen({navigation}) {
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log(apiData.list[0])
-    console.log(location)
+    // console.log(location)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
