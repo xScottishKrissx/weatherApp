@@ -8,9 +8,10 @@ import Search from './Search/search';
 
 
 function formatTemp(temperature){ return Math.floor(temperature) }
-export default function CurrentWeather({apiData, test, setData}) {
+export default function CurrentWeather({apiData, setQuery}) {
 
-    const citName = apiData.city.name
+    console.log(apiData)
+    const citName = apiData.city.name || "placeholder"
     
     const {temp, temp_max, temp_min, humidity, feels_like} = apiData.list[0].main
 
@@ -31,7 +32,7 @@ export default function CurrentWeather({apiData, test, setData}) {
             />
             <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
         </View> */}
-        <Search currentLocation={citName} sendData={setData}/>
+        {/* <Search currentLocation={citName} setQuery={setQuery} /> */}
 
 {/* Display Current Forecast */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>
