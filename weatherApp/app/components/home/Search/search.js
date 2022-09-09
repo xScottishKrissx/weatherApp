@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 
+
+
 export default function Search({setQuery, apiData}) {
 
     const [input, setInput] = useState()
@@ -16,19 +18,40 @@ export default function Search({setQuery, apiData}) {
     let checkOk
     if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
 
+
+
+
+
     return (
-    <View style={styles.rowStyle}>
-        <TextInput onChangeText={(value) => setInput(value)} value={input}/>
-        <MatIcons style={{paddingLeft:10, fontSize:40}} name='add' size={32} color='white' />
-        <Text>Check: {checkOk === false ? "Error" : "Ok"}</Text>
+    <View style={styles.searchWrapper}>
+
+        <View style={styles.rowStyle}>
+            <TextInput style={styles.input}  onChangeText={(value) => setInput(value)} value={input}/>
+            <MatIcons style={{paddingLeft:10, fontSize:40}} name='edit' size={32} color='white' />
+        </View>
+
+        <View  style={styles.rowStyle}>
+            <Text>Check: {checkOk === false ? "Error" : apiData.city.name}</Text>
+        </View>
+
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+    searchWrapper:{
+        flexDirection:'column',
+        marginBottom:10,
+    },
+
     rowStyle:{
         flexDirection:'row',
         alignItems:"center",
         marginBottom:10,
     },
+    input:{
+        borderColor:"black",
+        borderBottomWidth:1,
+        width:"90%"
+    }
 })
