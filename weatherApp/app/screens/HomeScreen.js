@@ -14,95 +14,34 @@ function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [location, setLocation] = useState()
 
-    const [errorMsg, setErrorMsg] = useState(false)
-
-    const tempThing = location || "glasgow"
+    const locationToGet = location || "glasgow"
 
     useEffect(() => {
         // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
         // fetch("http://api.openweathermap.org/geo/1.0/direct?q=pollok,gb&limit=5&appid=3021873ba7751f7019c80e409b315b6d")
         
-        fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + tempThing + "&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
+        fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
         .then(res => {
             return res.json()
         })
         .then(data => {
             console.log("Fetch Complete")
-            // console.log(data.list[0])
-            // const mapThing = data.list.map(x =>{
-            //     delete x.clouds
-            //     delete x.main.grnd_level
-            //     delete x.main.pressure
-            //     delete x.main.sea_level
-            //     delete x.main.temp_kf
-            //     delete x.rain
-            //     delete x.pop
-            //     delete x.sys
-            //     delete x.visibility
-            //     delete x.visibility
-            //     return x
-            // })
-            
-            // // console.log(data.city)
-            // // console.log(mapThing[15])
-
             setApiData(data)
-            // setLoading(false)
+            setLoading(false)
         } )
         
         .catch(error => console.log(error))
         
-    }, [location])
-
-    console.log(apiData)
-
-    if(apiData === null ) {
-        return ( <View><Text>Loading...</Text></View> )
-    }
-
-    let displayMsg;
-    if(apiData.cod === "404"){
-        displayMsg = true
-        return null;
-    }
-    console.log("DisplayMsg: " + displayMsg)
-
-    // console.log(apiData.city.name)
-    const updateApi = (query) =>{
-    console.log("UpdateAPI Fired")
-        if(apiData){
-            if(apiData.cod === "404"){
-                // console.log("Error: 404")
-                setLoading(true)
-            }else{
-                // console.log("Success")
-                // console.log(data)
-                // setApiData(query)
-                setLocation(query)
-                setLoading(false)
-                // console.log(data.list[0].main.temp)
-            }
-        }else{
-            // console.log("Escape")
-        }
-    }
+    }, [locationToGet])
 
 
-    // console.log(loading)
+    if(apiData === null ) return ( <View><Text>Loading...</Text></View> ) 
     if(loading === true) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    // console.log(apiData.list[0])
-    // console.log(location)
-    // const updateData = (a) =>{
-    //     console.log("City Name: " + a.city.name)
-    //     setApiData(a)
-    // }
-    // console.log(apiData.city.name)
-    // console.log(apiData.list[0])
 
     return (
         <View style={styles.container}>
@@ -112,14 +51,9 @@ function HomeScreen({navigation}) {
 
                 <View style={styles.locationWeatherContainer}>
                     {/* <Sunriseset apiData={apiData.city}/> */}
-                    <View>
-                        <Text>
-                            {displayMsg === true ? "Please Enter A Valid search term" : null}
-                        </Text>
-                    </View>
-                    <Search currentLocation={location}  setQuery={updateApi} />
+                    <Search apiData={apiData} setQuery={(query) => setLocation(query)} />
                     <CurrentWeather apiData={apiData} />
-                    {/* <Forecast apiData={apiData} /> */}
+                    <Forecast apiData={apiData} />
 
                         {/* Nav */}
                         {/* <Text>-- Nav Test --</Text>

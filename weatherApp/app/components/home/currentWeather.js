@@ -10,7 +10,8 @@ import Search from './Search/search';
 function formatTemp(temperature){ return Math.floor(temperature) }
 export default function CurrentWeather({apiData, setQuery}) {
 
-    console.log(apiData)
+    // console.log(apiData)
+    if(!apiData.city) return(<View><Text>Error</Text></View>)
     const citName = apiData.city.name || "placeholder"
     
     const {temp, temp_max, temp_min, humidity, feels_like} = apiData.list[0].main
