@@ -19,14 +19,14 @@ function HomeScreen({navigation}) {
     const [loading, setLoading] = useState(false)
     const [location, setLocation] = useState()
     const [savedLocation, saveLocation] = useState()
-    const locationToGet = location || savedLocation || "glasgow"
+    const locationToGet = location || savedLocation || "loading"
 
 
 
-    const storeData = async (x) => {
+    const storeData = async (query) => {
         // console.log(x)
         try {
-          await AsyncStorage.setItem('queryValue', x);
+          await AsyncStorage.setItem('queryValue', query);
         } catch (error) {
           // Error saving data
         }
@@ -91,36 +91,30 @@ function HomeScreen({navigation}) {
     // if(locationToGet === null) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-
+    console.log("Location to get: " + locationToGet)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
 
-                <Title navigation={navigation}/>    
-
-                <View style={styles.locationWeatherContainer}>
-                    {/* <Sunriseset apiData={apiData.city}/> */}
-                    <Search 
-                        apiData={apiData} 
-                        // setQuery={(query) => setLocation(query)} 
-                        setQuery={doSave}
-                    />
-                    <CurrentWeather apiData={apiData} />
-                    <Forecast apiData={apiData} />
-
-                        {/* Nav */}
-                        {/* <Text>-- Nav Test --</Text>
-                        <Text onPress={()=>navigation.push("AboutScreen")}>Navigate To About Screen</Text>
-                    <Text onPress={()=>navigation.push("Test", {name:"Test 1 Header"})}>Go To Test</Text> */}
-
-                        {/* Navigate across stacks Home to About */}
-                        {/* <Text onPress={()=>{
-                            navigation.navigate('About',{
-                                screen:'Test2',
-                                params:{name:"Test 2 Header"}
-                            })
-                        }}>Go Directly To Test 2 in About</Text> */}
+                {locationToGet === "loading" ? 
+                <View>
+                  <Text>Loading...</Text>
                 </View>
+                  // <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
+                  //   <Text style={{color:colours.white}}>Loading...</Text>
+                  // </View>
+                 : 
+                  <>
+                    <Title navigation={navigation}/>    
+                    <View style={styles.locationWeatherContainer}>
+                        {/* <Sunriseset apiData={apiData.city}/> */}
+                        <Search apiData={apiData} setQuery={doSave} />
+                        <CurrentWeather apiData={apiData} />
+                        <Forecast apiData={apiData} />
+                    </View>
+                  </>
+                  }
+
             </ImageBackground>
         </View>
     );
