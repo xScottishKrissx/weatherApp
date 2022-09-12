@@ -19,6 +19,10 @@ function HomeScreen({navigation}) {
     const [loading, setLoading] = useState(false)
     const [location, setLocation] = useState()
     const [savedLocation, saveLocation] = useState()
+
+    const [searchInProgress, setSearchInProgress] = useState(false)
+
+
     const locationToGet = location || savedLocation || "loading"
 
 
@@ -34,10 +38,10 @@ function HomeScreen({navigation}) {
 
     
       const getData = async () => {
-        console.log("Get Data")
+        // console.log("Get Data")
         try {
           const value = await AsyncStorage.getItem('queryValue');
-          console.log(value)
+          // console.log(value)
           if (value !== null) {
             // We have data!!
             // console.log(value)
@@ -49,6 +53,9 @@ function HomeScreen({navigation}) {
       };
 
       const doSave = (query) =>{
+        console.log(query)
+        console.log(location)
+        console.log(savedLocation)
         setLocation(query)
         storeData(query)
         getData()
@@ -91,14 +98,15 @@ function HomeScreen({navigation}) {
     // if(locationToGet === null) return ( <View><Text>Loading...</Text></View> )
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    console.log("Location to get: " + locationToGet)
+    // console.log("Location to get: " + locationToGet)
+    // console.log("Search In Progress:" + searchInProgress)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
 
                 {locationToGet === "loading" ? 
                 <View>
-                  <Text>Loading...</Text>
+                  <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
                 </View>
                   // <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
                   //   <Text style={{color:colours.white}}>Loading...</Text>
@@ -108,9 +116,18 @@ function HomeScreen({navigation}) {
                     <Title navigation={navigation}/>    
                     <View style={styles.locationWeatherContainer}>
                         {/* <Sunriseset apiData={apiData.city}/> */}
-                        <Search apiData={apiData} setQuery={doSave} />
-                        <CurrentWeather apiData={apiData} />
-                        <Forecast apiData={apiData} />
+                        <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+                        
+                        {searchInProgress ? 
+                          <Text>True</Text> 
+                          : 
+                          <>
+                            <CurrentWeather apiData={apiData} />
+                            <Forecast apiData={apiData} />
+                          </>
+                        }
+
+
                     </View>
                   </>
                   }

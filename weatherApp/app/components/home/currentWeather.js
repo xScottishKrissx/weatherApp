@@ -37,7 +37,7 @@ export default function CurrentWeather({apiData, setQuery}) {
 
 {/* Display Current Forecast */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>
-            <Text style={{fontSize:20}}>Current</Text>
+            <Text style={{fontSize:20}}>Current - {citName}</Text>
         </View>
 
         <View style={[styles.rowStyle, styles.weatherReport]}>

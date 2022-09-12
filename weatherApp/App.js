@@ -99,7 +99,7 @@ export default function App() {
   if(isLoading) {
     return (
       <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
-        <Text style={{color:colours.white}}>Loading...</Text>
+        <Text style={{color:colours.white}}>Loading.....</Text>
       </View>
     )
   }
