@@ -12,16 +12,18 @@ export default function CurrentWeather({apiData, setQuery}) {
 
     // console.log(apiData)
     if(!apiData.city) return(<View><Text>Error</Text></View>)
-    const citName = apiData.city.name || "placeholder"
     
+    const {country, name, population} = apiData.city
+    const {lat, lon} = apiData.city.coord
     const {temp, temp_max, temp_min, humidity, feels_like} = apiData.list[0].main
-
+    
     const {gust} = apiData.list[0].wind 
     const windSpeed = Math.floor(gust * 2.237)
     
     const {description, icon} = apiData.list[0].weather[0]
-
-
+    
+    
+    const citName = name || "placeholder"
 
   return (
     <>
@@ -37,7 +39,8 @@ export default function CurrentWeather({apiData, setQuery}) {
 
 {/* Display Current Forecast */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>
-            <Text style={{fontSize:20}}>Current - {citName}</Text>
+            <Text style={{fontSize:20}}>{citName}, {country}</Text>
+            <Text style={{fontSize:20}}>Lat: {lat} | Long: {lon}</Text>
         </View>
 
         <View style={[styles.rowStyle, styles.weatherReport]}>
@@ -77,7 +80,10 @@ const styles = StyleSheet.create({
         marginBottom:10,
     },
     forecastPeriod:{
-        justifyContent:"space-between"
+        justifyContent:"space-between",
+        flexDirection:"column",
+        alignContent:"flex-start",
+        alignItems:"flex-start",
     },
     weatherReport:{
         justifyContent:"center",

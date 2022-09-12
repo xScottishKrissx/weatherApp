@@ -38,7 +38,7 @@ export default function Search({setQuery, apiData, searchInProgress}) {
 
     let checkOk
     if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
-
+    // console.log(apiData)
     return (
     <View style={styles.searchWrapper}>
 

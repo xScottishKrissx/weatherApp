@@ -53,9 +53,9 @@ function HomeScreen({navigation}) {
       };
 
       const doSave = (query) =>{
-        console.log(query)
-        console.log(location)
-        console.log(savedLocation)
+        // console.log(query)
+        // console.log(location)
+        // console.log(savedLocation)
         setLocation(query)
         storeData(query)
         getData()
