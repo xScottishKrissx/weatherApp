@@ -9,7 +9,7 @@ import Sunriseset from '../components/home/sunriseset';
 import CurrentWeather from '../components/home/currentWeather';
 import Forecast from '../components/home/Forecast/forecast';
 import Search from '../components/home/Search/search';
-
+import loading from '../../app/assets/loading.gif'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function HomeScreen({navigation}) {
@@ -119,7 +119,10 @@ function HomeScreen({navigation}) {
                         <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
                         
                         {searchInProgress ? 
-                          <Text>True</Text> 
+                        <View style={{alignItems:"center", flexDirection:"column"} }>
+                          <Text>Searching...</Text>
+                          <Image source={require('../assets/loading2.gif')}/>
+                        </View>
                           : 
                           <>
                             <CurrentWeather apiData={apiData} />
