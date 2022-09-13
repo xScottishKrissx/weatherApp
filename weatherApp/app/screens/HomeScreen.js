@@ -13,10 +13,19 @@ import loading from '../../app/assets/loading.gif'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './loading';
 
+import countryCodes from '../config/countryCodes.json'
+
+const longCountryName = (countryCode) =>{
+  const filterCountry = countryCodes.filter(x => x.Code === countryCode)
+  return filterCountry[0].Name
+}
+
 function HomeScreen({navigation}) {
     
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
+    const [countryData, setCountryData] = useState()
+
     const [loading, setLoading] = useState(false)
     const [location, setLocation] = useState()
     const [savedLocation, saveLocation] = useState()
@@ -50,6 +59,7 @@ function HomeScreen({navigation}) {
           }
         } catch (error) {
           // Error retrieving data
+
         }
       };
 
@@ -75,15 +85,26 @@ function HomeScreen({navigation}) {
         //     getLocation()
         // }
         // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
-        // fetch("http://api.openweathermap.org/geo/1.0/direct?q=pollok,gb&limit=5&appid=3021873ba7751f7019c80e409b315b6d")
+        Promise.all([
+          fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
+          fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d")
+        ])
+        .then(responses => 
         
-        fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
-        .then(res => {
-            return res.json()
-        })
+          Promise.all(responses.map(response => 
+              response.json()
+          ))
+          
+      )
         .then(data => {
             console.log("Fetch Complete 3")
-            setApiData(data)
+            // Getting Country Info
+            console.log(data[1])
+
+
+
+            setApiData(data[0])
+            setCountryData(data[1])
             setLoading(false)
             getData()
         } )
@@ -91,16 +112,34 @@ function HomeScreen({navigation}) {
         .catch(error => console.log(error))
         
     }, [locationToGet])
-
-    if(apiData === null || loading === true){return <LoadingScreen />}
+    if(apiData === null || loading === true || countryData === undefined){return <LoadingScreen />}
     if(apiData.city === undefined || apiData.cod === 404 ){
-          <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+      <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
     }
+    // console.log(apiData.city.country)
 
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log("Main render: " + apiData.city)
     // console.log("Main Render: " + locationToGet)
+
+
+    console.log(countryData)
+
+    // let getCasesFromTimeline = Object.entries(countryData).map(([name,country]) => ({name, country}))
+    // console.log(getCasesFromTimeline)
+    // const convertCountryDataToArray = Object.entries(countryData)
+    // console.log(convertCountryDataToArray)
+    // console.log(countryData)
+    const mapNames = countryData.map((x, index) => {
+      // return console.log(x.country)
+      // console.log(x.country)
+      return(
+        <View key={index}>
+          <Text>{x.name},{x.state},{longCountryName(x.country)}</Text>
+        </View>
+      )
+    })
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
@@ -119,6 +158,7 @@ function HomeScreen({navigation}) {
                     <View style={styles.locationWeatherContainer}>
                         {/* <Sunriseset apiData={apiData.city}/> */}
                         <Search apiData={apiData} setQuery={ doSave } searchInProgress={setSearchInProgress}/>
+                        {mapNames}
                         
                         {searchInProgress || apiData.city === undefined || apiData.cod === 404 ? 
                         <View style={{alignItems:"center", flexDirection:"column"} }>
