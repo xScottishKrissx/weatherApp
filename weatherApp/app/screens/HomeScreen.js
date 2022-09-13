@@ -11,6 +11,7 @@ import Forecast from '../components/home/Forecast/forecast';
 import Search from '../components/home/Search/search';
 import loading from '../../app/assets/loading.gif'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingScreen from './loading';
 
 function HomeScreen({navigation}) {
     
@@ -90,12 +91,7 @@ function HomeScreen({navigation}) {
         
     }, [locationToGet])
 
-
-
-    if(apiData === null ) return ( <View><Text>Loading API DATA...</Text></View> ) 
-    if(loading === true) return ( <View><Text>Loading LOADING...</Text></View> )
-    // if(locationToGet === undefined) return ( <View><Text>Loading...</Text></View> )
-    // if(locationToGet === null) return ( <View><Text>Loading...</Text></View> )
+    if(apiData === null || apiData.city === undefined  || loading === true) return <LoadingScreen />
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
     // console.log("Location to get: " + locationToGet)

@@ -15,6 +15,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from './app/screens/HomeScreen'
 import About from './app/screens/About.js';
 import { ScrollView } from 'react-native-gesture-handler';
+import LoadingScreen from './app/screens/loading.js';
 
 
 if(Platform.OS === 'android') { // only android needs polyfill
@@ -97,14 +98,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true) 
   useEffect(()=>{ setTimeout(()=>{ setIsLoading(false) }, 1000) },[])
 
-  if(isLoading) {
-    return (
-      <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
-        <Text style={{color:colours.white}}>Loading.....</Text>
-      </View>
-    )
-  }
-//
+  if(isLoading) return <LoadingScreen/>
+
 
   return (
     
@@ -143,9 +138,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     
-    backgroundColor: colours.white,
+    backgroundColor: "black",
     alignItems: 'center',
     justifyContent: 'center',
-    color:colours.white
+    color:colours.white,
+    width:"60%"
   },
 });
