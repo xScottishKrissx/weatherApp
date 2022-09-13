@@ -29,7 +29,7 @@ function HomeScreen({navigation}) {
 
 
     const storeData = async (query) => {
-        // console.log(x)
+        // console.log("storeData: " + query)
         try {
           await AsyncStorage.setItem('queryValue', query);
         } catch (error) {
@@ -42,7 +42,7 @@ function HomeScreen({navigation}) {
         // console.log("Get Data")
         try {
           const value = await AsyncStorage.getItem('queryValue');
-          // console.log(value)
+          console.log("In Local Storage:: " + value)
           if (value !== null) {
             // We have data!!
             // console.log(value)
@@ -53,10 +53,11 @@ function HomeScreen({navigation}) {
         }
       };
 
-      const doSave = (query) =>{
-        // console.log(query)
+      const doSave = (query, okToSave) =>{
+        // console.log("Do Save: " + query, okToSave)
         // console.log(location)
         // console.log(savedLocation)
+        console.log( apiData.cod)
         setLocation(query)
         storeData(query)
         getData()
@@ -91,17 +92,22 @@ function HomeScreen({navigation}) {
         
     }, [locationToGet])
 
-    if(apiData === null || apiData.city === undefined  || loading === true) return <LoadingScreen />
+    if(apiData === null || loading === true){return <LoadingScreen />}
+    if(apiData.city === undefined || apiData.cod === 404 ){
+          <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+    }
+
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    // console.log("Location to get: " + locationToGet)
-    // console.log("Search In Progress:" + searchInProgress)
+    // console.log("Main render: " + apiData.city)
+    // console.log("Main Render: " + locationToGet)
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>
 
                 {locationToGet === "loading" ? 
-                <View>
+                <View style={{flex:1, justifyContent:"center", width:"90%"}}>
+                  <Text>Please enter the name of a city</Text>
                   <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
                 </View>
                   // <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
@@ -112,9 +118,9 @@ function HomeScreen({navigation}) {
                     <Title navigation={navigation}/>    
                     <View style={styles.locationWeatherContainer}>
                         {/* <Sunriseset apiData={apiData.city}/> */}
-                        <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+                        <Search apiData={apiData} setQuery={ doSave } searchInProgress={setSearchInProgress}/>
                         
-                        {searchInProgress ? 
+                        {searchInProgress || apiData.city === undefined || apiData.cod === 404 ? 
                         <View style={{alignItems:"center", flexDirection:"column"} }>
                           <Text>Searching...</Text>
                           <Image source={require('../assets/loading2.gif')}/>

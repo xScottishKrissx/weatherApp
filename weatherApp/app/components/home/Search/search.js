@@ -5,14 +5,15 @@ import MatIcons from '@expo/vector-icons/MaterialIcons'
 import colours from '../../../config/colours';
 
 export default function Search({setQuery, apiData, searchInProgress}) {
-
+    let checkOk
     const [input, setInput] = useState()
     const [startInput, setStartInput] = useState(false)
 
     // Delay query until after user stops typing...
     useEffect(()=>{
         const timeoutId = setTimeout(() => {
-                setQuery(input)
+            // console.log("useEffect" + checkOk)
+                setQuery(input, checkOk)
                 searchInProgress(false)
             }
             , 1000)
@@ -36,13 +37,13 @@ export default function Search({setQuery, apiData, searchInProgress}) {
         };
       }, [startInput]);
 
-    let checkOk
+    
     if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
     // console.log(apiData)
     return (
     <View style={styles.searchWrapper}>
 
-        <View style={styles.rowStyle}>
+        <View style={styles.rowStyle }>
             
            {startInput ? 
                 <TextInput 
@@ -54,7 +55,7 @@ export default function Search({setQuery, apiData, searchInProgress}) {
                  />
                     : 
                 <Text style={styles.placeholder}>
-                    {checkOk === false ? "loading" : apiData.city.name}
+                    {checkOk === false ? "..." : apiData.city.name}
                 </Text>
             }
             
@@ -92,11 +93,13 @@ const styles = StyleSheet.create({
         width:"90%"
     },
     placeholder:{
-        borderColor:"black",
+        alignContent:"center",
         color:"black",
         fontSize:32,
         opacity:2,
-        width:"90%"
+        width:"90%",
+        borderColor:"black",
+        borderBottomWidth:2,
     },
     iconStyles:{
         color:colours.white,

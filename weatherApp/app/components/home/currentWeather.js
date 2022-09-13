@@ -6,12 +6,24 @@ import FeatherIcons from '@expo/vector-icons/Feather'
 import { TextInput } from 'react-native-gesture-handler';
 import Search from './Search/search';
 
+// Data from https://datahub.io/core/country-list#resource-country-list_zip
+import countryCodes from '../../config/countryCodes.json'
+
+const longCountryName = (countryCode) =>{
+    const filterCountry = countryCodes.filter(x => x.Code === countryCode)
+    return filterCountry[0].Name
+}
 
 function formatTemp(temperature){ return Math.floor(temperature) }
 export default function CurrentWeather({apiData, setQuery}) {
 
     // console.log(apiData)
-    if(!apiData.city) return(<View><Text>Error</Text></View>)
+    if(!apiData.city) 
+        return(
+            <View>
+                <Text>Error</Text>
+            </View>
+        )
     
     const {country, name, population} = apiData.city
     const {lat, lon} = apiData.city.coord
@@ -38,8 +50,10 @@ export default function CurrentWeather({apiData, setQuery}) {
         {/* <Search currentLocation={citName} setQuery={setQuery} /> */}
 
 {/* Display Current Forecast */}
+        {/* <Text>Current Weather</Text> */}
         <View style={[styles.rowStyle, styles.forecastPeriod]}>
-            <Text style={{fontSize:20}}>{citName}, {country}</Text>
+            {/* <Text style={{fontSize:20}}>{citName}, {country}</Text> */}
+            <Text style={{fontSize:20}}>{citName}, {longCountryName(country)} </Text>
             <Text style={{fontSize:20}}>Lat: {lat} | Long: {lon}</Text>
         </View>
 
