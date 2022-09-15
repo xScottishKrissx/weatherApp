@@ -1,0 +1,172 @@
+✔ Let's see if this attempt goes smoother than before. @done(22-09-15 14:08)
+✔ Complete Tutorial @done(22-08-11 15:55)
+  ✔ Subjects @done(22-08-11 15:55)
+    ✔ Orientation @done(22-08-11 15:55)
+    ✔ Flex Box @done(22-08-11 15:55)
+    ✔ Flex Direction @done(22-08-11 15:55)
+    ✔ Justify Content @done(22-08-11 15:55)
+    ✔ Align Items @done(22-08-11 15:55)
+    ✔ align self @done(22-08-11 15:55)
+    ✔ flex-wrap @done(22-08-11 15:55)
+    ✔ align-content @done(22-08-11 15:55)
+    ✔ flex-basis @done(22-08-11 15:55)
+    ✔ Absolute/Relative Positioning @done(22-08-11 15:55)
+
+Weather App:
+  API Key -> 3021873ba7751f7019c80e409b315b6d  
+  ☐ Goals
+    ☐ Ability to search for your location and get the weather
+  
+  
+
+  ☐ Split code into components.
+    ☐ The codebase is getting a bit clunky to manage so I think it's time to start creating components. 
+      ✔ Home @done(22-08-26 15:22)
+        ✔ Title @done(22-08-26 14:19)
+        ✔ Sunsetrise @done(22-08-26 14:19)
+        ✔ Current Weather @done(22-08-26 14:43)
+        ✔ Forecast @done(22-08-26 15:20)
+      ☐ Nav
+
+  ☐ Part 1 - Get the weather for G53 6UT
+    ✔ Just make a fetch call right? @done(22-08-11 17:37)
+      ✔ More or less yeah, after some finagling with the open weather api i'm able to get the city name and temperature for glasgow @done(22-08-11 17:37)
+      From here, i think i'll focus on UI to get used to React Native
+        Plagiarise the Holy Hell out of the BBC Weather App. It's technically mine so I think im entitled to steal my own work...
+      Using React Native to create a Weather App UI:
+        ☐ Step 1: Draw the rest of the Owl.
+        
+        General:
+          ✔ There's too much loading happening after the main view renders, add a loading screen to cover this up. @done(22-09-13 13:19)
+            ✔ Create a single loading component to be reused @done(22-09-13 13:19)
+
+        Background Image:
+          ☐ A basic one to begin with...
+          ☐ ...but later on change this depending on the weather description
+            ☐ ... a background for sunny, rain, cloudy, snow etc
+        
+        Header:
+          ☐ Hamburger Icon
+            ☐ Bit of a tangent here, but I think learning how to create a menu button and move between screens would be a good thing to learn at this point. Seems like  fundamental skill for app development.
+              ☐ Ok actually not to crazy, the setup is a  bit overwhelming(with the various libraries needed), but the actual implementaion of creating a basic page swap is quite simple. I found a very helpful tutorial that helped really get to grips with this.
+                https://www.youtube.com/watch?v=nQVCkqvU1uE
+              ☐ You just need to make sure you have the correct containers for you pages
+              <AuthStack.Navigator>
+                <AuthStack.Screen name="Home" component={HomeScreen} /> -> The Home Page
+                <AuthStack.Screen name="About" component={About} /> -> The About Page
+              </AuthStack.Navigator>
+              ☐ ...then you pass a prop of navigation to each of those components
+                function HomeScreen({navigation}) {...}
+              ☐ ...and use the prop in a press to "push" a new page
+                <Text onPress={()=>navigation.push("About")}>About</Text> -> Go to the about page
+              ☐ ...and that's the very basic idea.
+              ☐ ...it's more complicated once you try to implement a nav tree, but it's all essentially the same idea, just make sure you've got the correct names and containers
+
+              ☐ Types of Nav
+                ☐ Stack -> The absolute basics
+                ☐ Tabs -> Tabs that appear on page you can click
+                ☐ Nav Drawer -> A menu that appears
+              ☐ Names have to be unique, you can't have 2 of the same screen name even if they're both the same thing.
+
+          ☐ Title
+          ☐ Search Icon
+
+        Sunrise / Sunset:
+          ☐ I dont think i need to have this down to the second
+
+        Location Name:
+          ✔ Clicking on this should open a search box to add a new location @done(22-09-13 16:19)
+
+        Weather Report:
+          ✔ Weather Icon @done(22-08-29 17:54)
+          ✔ Current Temp @done(22-08-29 17:54)
+          ✔ OpenWeather DOESNT do chance of rain, use Humidity @done(22-08-29 17:54)
+          ✔ wind speed @done(22-08-29 17:54)
+          ☐ Weather Description
+            ☐ I think I need to add feels like into the current forecast somewhere
+          ✘ Weather Alerts @cancelled(22-08-23 15:34)
+            Not in api
+          ✔ Added full country name next to city @done(22-09-13 16:20)
+        
+        Forecast:
+          ☐ Instead of days, using forecast for coming hours
+          ☐ I've got the forecast mapping, but now I need to figure out how to make it scroll
+            ☐ Managed it using flat list component, now I just need to style
+            ☐ format date, remove year, leave time and date.
+            ☐ I might want to use a section list here as I want separation between days.
+              ☐ not sure i can manage that here, there are no clear sections other than days. I think just making the day very clear will be good enough here.
+          ✔ Turns out to use toLocaleTimeString with Android/ReactNative you need to install and Import intl into the root files. @done(22-08-26 12:13)
+            https://stackoverflow.com/a/55861894 -> What to do
+          ☐ I've added the icons and its looking ok but I think more detail is needed.
+            ☐ When you tap on a row, extra detail should appear with the description of the weather. The icons might be a bit too vague.
+              ☐ I've got the core of this in place, i just to need to properly style and make small tweaks
+                ✔ Style @done(22-08-29 17:48)
+                ✔ Make small tweaks @done(22-08-29 17:48)
+
+          ☐ The forecast component is getting quite big, i should start thinking about splitting this up.
+          ✔ The foreast component is very laggy when expanding each item. I have spent days trying to figure out how to make this less laggy but I haven't managed it so im moving on. Perhaps ill figure it out later but I am spending way too much time on what should be a basic intro project @done(22-09-05 18:32)
+            ✔ Ok im back and I think I have an idea. The main lag comes from the map, so if I can use something else then maybe that will help me out. @done(22-09-06 17:38)
+            ✔ I'm not using a map, im using a flat list and it's still laggy. Im still stuck @done(22-09-06 17:38)
+              ✔ I think react memo might be the way forward based on a few thing's ive looked @done(22-09-06 17:38)
+                ✔ Progress, i think. I've got a new memo component resposnible for the rows. I'll need work backwards and integrate everything but hopefully this helps with the lag as it should only be updating props that need to be changed rather than the whole thing @done(22-09-06 17:38)
+                ✔ DID IT!!! No more lag. @done(22-09-06 17:38)
+                  ✔ It wasn't that hard, all you do is create  normal component and wrap it in a memo tag. There's more involved with the flat list side of things but even that isn't too bad. @done(22-09-06 17:38)
+                  ✔ There's a lot to cleanup but the biggest issue so far has been fixed and Im relieved to be able to move on @done(22-09-06 17:38)
+          ☐ I think forecast row can also be further split up -> Visible/Hidden Components
+          ✔ Add icon to forecast row that indicates you can reveal more information on press @done(22-09-07 13:49)
+
+      Expo Go:
+        ✔ The remote debug feature has cost me half a day of progress. It just stopped working and I couldnt figure out how to turn it off. I eventually had to uninstall both the mobile app and wipe and do a cold wipe in the emulator. @done(22-09-06 16:08)
+
+      Using React Native to Create the Search Functionality:
+        ☐ Then I'll work on the search functionality
+          ✔ Well i got started and didn't get too far @done(22-09-08 17:20)
+          ✔ I've created a new search component with a text input field that I am using to get a input. I then use this input to query the api for the location. This is where Im hitting a bit of a wall as i need to account for wrong and right queries. @done(22-09-08 17:20)
+            ✔ Done. I created  anumber of handlers to catch any stray queries, meaning I now have a form where you can search for a city and get a delayed response... @done(22-09-08 17:20)
+              ✔ ...why delayed? I didn't want to bombard the API everytime the form is changed, so it now takes second to display the result of a query. Right now it looks like a lag but I will a proper ui to reflect the fact I am waiting for results. @done(22-09-08 17:20)
+              ✔ Display data from api on page if query correct @done(22-09-13 13:19)
+                ✔ DOne, although if the search box is empty nothing changes. @done(22-09-13 13:19)
+                  ✔ Is this what I want? @done(22-09-13 13:19)
+                  // It will just what is currently saved in state
+                  ✔ I now have another issue to solve, typing a wrong answer. @done(22-09-09 15:58)
+                    ✔ I've moved the search component into the Home screen and moved the fetch logic into the original fetch to reduce the amount of calls to the api. @done(22-09-09 12:56)
+                    ✔ I've managed to get this working ok. I think a lot of my issues here is trying to be overcomplicated. I simply needed to add a check for a 404 and change the UI accordingly. @done(22-09-09 15:58)
+                  ✔ The box remains empty for now but will be filled when i add the ability to save locations. @done(22-09-12 13:16)
+          ✔ When editing the location, the keyboard should instantly appear @done(22-09-12 13:36)
+            // use autofocus prop on the text input
+          ✔ When pressing return on the keyboard, the keyboard should hide @done(22-09-12 13:36)
+            // use the .Keyboard react native event listeners
+          ☐ When searching for a new location, the rest of the UI should change to show this process.
+            ☐ I've mostly got this, it just needs to be cleaned up. There's a second where you can see the old location before it switches
+          ☐ Im also working on what happens when you enter a wrong location
+          ✔ Add Local Storage @done(22-09-12 13:16)
+            ✔ Started work on this and Im able to get a token saved and retrieved. The main issue is that everytime the page renders, the main location to get is undefined until it contacts the API. This means that at least for a second the default is glasgow before picking up the stored value. @done(22-09-12 13:16)
+              ✔ Im sure theres a way around this, i just havent figure it out yet. @done(22-09-12 13:16)
+                ✔ Maybe isntead of having a default city, just have a loading string and change the UI to wait for a users input.? @done(22-09-12 13:16)
+          ✔ Added searching icon when searching @done(22-09-12 18:01)
+          ✔ Add country, lat and long to current forecast. @done(22-09-12 18:01)
+          ☐ Allow users to choose from a list of options if available
+            > Dublin, Ireland is secondary to Dublin, United States for example...which is just so wrong.
+            ☐ I've managed to get a list of cities matching the search result.
+            ☐ The next step is to pass the pressed result back into the search component to output the chosen city information.
+              ✔ The united states also needs a state code @done(22-09-15 14:03)
+              ☐ I have a query that fetches information from the API when you click on one of the list items. 
+                I need to:
+                  ☐ Remove the search bar's ability to submit queries so that only pressing a result will return information
+                  ☐ Save the new location to local storage
+                  ☐ Retrieve saved location information from local storage
+                  ☐ Probably hide the UI until a location is selected(which could also free up more room for more results.)
+                Known Issues:
+                  ☐ The API has cities that return from the Geolocation API that dont actually return weather information. Unless I have this wrong I don't think there's anything I can do about this other than hide these cities before they're displayed in the list.
+                    ☐ I don't know If im right about this but if i look up these cities on the Open Weather website, they're also not there. It's very strange.
+
+      Other Pages:
+        ☐ How about instead of having multiple pages, you have multiple(up to 3?) saved locations that you can browse.
+Archive:
+
+Data / Resources:
+  United States State Codes
+  https://gist.githubusercontent.com/mshafrir/2646763/raw/8b0dbb93521f5d6889502305335104218454c2bf/states_titlecase.json
+
+  Country Codes
+  https://datahub.io/core/country-list#resource-country-list_zip
