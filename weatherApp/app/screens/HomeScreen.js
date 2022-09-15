@@ -11,13 +11,19 @@ import Forecast from '../components/home/Forecast/forecast';
 import Search from '../components/home/Search/search';
 import loading from '../../app/assets/loading.gif'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoadingScreen from './loading';
+import LoadingScreen from './Loading';
 
 import countryCodes from '../config/countryCodes.json'
+import usStateCodes from '../config/usStateCodes.json'
 
 const longCountryName = (countryCode) =>{
   const filterCountry = countryCodes.filter(x => x.Code === countryCode)
   return filterCountry[0].Name
+}
+
+const getStateCode = (usState) =>{
+  const filterCode = usStateCodes.filter(x => x.name === usState)
+  return filterCode[0].abbreviation
 }
 
 function HomeScreen({navigation}) {
@@ -30,8 +36,14 @@ function HomeScreen({navigation}) {
     const [location, setLocation] = useState()
     const [savedLocation, saveLocation] = useState()
 
+
     const [searchInProgress, setSearchInProgress] = useState(false)
 
+    const [testStore, setStoreCountry] = useState({
+      city:"glasgow",
+      state:"",
+      country:"GB"
+    })
 
     const locationToGet = location || savedLocation || "loading"
 
@@ -67,16 +79,28 @@ function HomeScreen({navigation}) {
         // console.log("Do Save: " + query, okToSave)
         // console.log(location)
         // console.log(savedLocation)
-        console.log( apiData.cod)
+        // console.log( apiData.cod)
         setLocation(query)
         storeData(query)
         getData()
       }
    
     // AsyncStorage.clear()
-
-
-
+      const selectLocation = (city, countryCode, state) =>{
+        
+        if(countryCode === "US"){
+          // console.log("Get State Code")
+          // console.log(getStateCode(state))
+          setStoreCountry({city:city, country:countryCode, state:getStateCode(state)})
+        }else{
+          console.log(city, countryCode)
+          setStoreCountry({city:city, country:countryCode, state:""})
+        }
+      }
+      const {city, state, country} = testStore
+      // const testCountry = country
+      const testCity = country === "US" ? city + "," + state : city
+      console.log("Search Params: " + testCity+","+country)
 
     useEffect(() => {
         
@@ -87,7 +111,8 @@ function HomeScreen({navigation}) {
         // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
         Promise.all([
           fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
-          fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d")
+          fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d"),
+          fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + testCity + "," + country + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
         ])
         .then(responses => 
         
@@ -99,47 +124,54 @@ function HomeScreen({navigation}) {
         .then(data => {
             console.log("Fetch Complete 3")
             // Getting Country Info
-            console.log(data[1])
+            // console.log(data[1])r
+            // console.log(data[2])
 
 
 
-            setApiData(data[0])
+            setApiData(data[2])
             setCountryData(data[1])
+
+            // setStoreCountry(data[2])
             setLoading(false)
             getData()
         } )
         
         .catch(error => console.log(error))
         
-    }, [locationToGet])
-    if(apiData === null || loading === true || countryData === undefined){return <LoadingScreen />}
+    }, [testStore, locationToGet])
+    if(apiData === null  || loading === true || countryData === undefined){return <LoadingScreen />}
     if(apiData.city === undefined || apiData.cod === 404 ){
       <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
     }
-    // console.log(apiData.city.country)
+    // console.log(apiData)
 
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
+    // console.log(testStore.city.country)
     // console.log("Main render: " + apiData.city)
     // console.log("Main Render: " + locationToGet)
 
 
-    console.log(countryData)
+    // console.log(countryData)
 
     // let getCasesFromTimeline = Object.entries(countryData).map(([name,country]) => ({name, country}))
     // console.log(getCasesFromTimeline)
     // const convertCountryDataToArray = Object.entries(countryData)
     // console.log(convertCountryDataToArray)
     // console.log(countryData)
+    console.log(apiData.cod)
     const mapNames = countryData.map((x, index) => {
       // return console.log(x.country)
       // console.log(x.country)
+      // console.log(x)
       return(
         <View key={index}>
-          <Text>{x.name},{x.state},{longCountryName(x.country)}</Text>
+          <Text onPress={()=>selectLocation(x.name, x.country, x.state)}>{x.name},{x.state},{longCountryName(x.country)}</Text>
         </View>
       )
     })
+
     return (
         <View style={styles.container}>
             <ImageBackground blurRadius={10} style={styles.container} source={require("../assets/clearSky.jpg")}>

@@ -15,7 +15,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from './app/screens/HomeScreen'
 import About from './app/screens/About.js';
 import { ScrollView } from 'react-native-gesture-handler';
-import LoadingScreen from './app/screens/loading.js';
+import LoadingScreen from './app/screens/Loading.js';
 
 
 if(Platform.OS === 'android') { // only android needs polyfill
