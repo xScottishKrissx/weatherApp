@@ -33,20 +33,31 @@ function HomeScreen({navigation}) {
     const [countryData, setCountryData] = useState()
 
     const [loading, setLoading] = useState(false)
-    const [location, setLocation] = useState()
     const [savedLocation, saveLocation] = useState()
+    const [location, setLocation] = useState(savedLocation || "")
 
+    const getData = async () => {
+      // console.log("Get Data")
+      try {
+        const value = await AsyncStorage.getItem('queryValue');
+        console.log("In Local Storage:: " + value)
+        if (value !== null) {
+          // We have data!!
+          // console.log(value)
+          return saveLocation(value)
+        }
+      } catch (error) {
+        // Error retrieving data
+
+      }
+    };
 
     const [searchInProgress, setSearchInProgress] = useState(false)
 
-    const [testStore, setStoreCountry] = useState({
-      city:"glasgow",
-      state:"",
-      country:"GB"
-    })
+
 
     const locationToGet = location || savedLocation || "loading"
-
+    console.log("Location to Get:" + locationToGet)
 
 
     const storeData = async (query) => {
@@ -59,21 +70,7 @@ function HomeScreen({navigation}) {
       };
 
     
-      const getData = async () => {
-        // console.log("Get Data")
-        try {
-          const value = await AsyncStorage.getItem('queryValue');
-          console.log("In Local Storage:: " + value)
-          if (value !== null) {
-            // We have data!!
-            // console.log(value)
-            return saveLocation(value)
-          }
-        } catch (error) {
-          // Error retrieving data
 
-        }
-      };
 
       const doSave = (query, okToSave) =>{
         // console.log("Do Save: " + query, okToSave)
@@ -82,25 +79,34 @@ function HomeScreen({navigation}) {
         // console.log( apiData.cod)
         setLocation(query)
         storeData(query)
-        getData()
+        // getData()
       }
+
+      // console.log("")
+      console.log("Saved Location: " + savedLocation)
+      const [testStore, setStoreCountry] = useState({
+        city: savedLocation || "....",
+        state:"",
+        country:""
+      })
    
     // AsyncStorage.clear()
       const selectLocation = (city, countryCode, state) =>{
-        
         if(countryCode === "US"){
           // console.log("Get State Code")
           // console.log(getStateCode(state))
           setStoreCountry({city:city, country:countryCode, state:getStateCode(state)})
         }else{
-          console.log(city, countryCode)
+          // console.log(city, countryCode)
           setStoreCountry({city:city, country:countryCode, state:""})
         }
       }
+
       const {city, state, country} = testStore
       // const testCountry = country
-      const testCity = country === "US" ? city + "," + state : city
-      console.log("Search Params: " + testCity+","+country)
+      // console.log(city)
+      const testCity = country === "US" ? savedLocation + "," + state : savedLocation
+      console.log("Search Params: " + testCity + "," +country)
 
     useEffect(() => {
         
@@ -110,8 +116,10 @@ function HomeScreen({navigation}) {
         // }
         // fetch("http://api.openweathermap.org/data/2.5/forecast?id=2648579&appid=3021873ba7751f7019c80e409b315b6d&units=metric")
         Promise.all([
-          fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
+          // fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
           fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + locationToGet + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d"),
+
+          // List
           fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + testCity + "," + country + "&limit=10&appid=3021873ba7751f7019c80e409b315b6d&units=metric"),
         ])
         .then(responses => 
@@ -122,15 +130,17 @@ function HomeScreen({navigation}) {
           
       )
         .then(data => {
-            console.log("Fetch Complete 3")
+            ("Fetch Complete 3")
             // Getting Country Info
             // console.log(data[1])r
             // console.log(data[2])
 
 
+            // List of possible countries
+            setCountryData(data[0])
 
-            setApiData(data[2])
-            setCountryData(data[1])
+            // Weather for a specific country
+            setApiData(data[1])
 
             // setStoreCountry(data[2])
             setLoading(false)
@@ -140,34 +150,37 @@ function HomeScreen({navigation}) {
         .catch(error => console.log(error))
         
     }, [testStore, locationToGet])
-    if(apiData === null  || loading === true || countryData === undefined){return <LoadingScreen />}
+    if(apiData === null  || loading === true || countryData === undefined ){return <LoadingScreen />}
+    // console.log(apiData.city)
     if(apiData.city === undefined || apiData.cod === 404 ){
-      <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+      <View>
+        <Text>Test 1</Text>
+        <Search 
+          apiData={apiData} 
+          setQuery={doSave} 
+          searchInProgress={setSearchInProgress}
+        />
+
+      </View>
     }
     // console.log(apiData)
 
 
     console.log("RenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrQQQa")
-    // console.log(testStore.city.country)
-    // console.log("Main render: " + apiData.city)
-    // console.log("Main Render: " + locationToGet)
 
-
-    // console.log(countryData)
-
-    // let getCasesFromTimeline = Object.entries(countryData).map(([name,country]) => ({name, country}))
-    // console.log(getCasesFromTimeline)
-    // const convertCountryDataToArray = Object.entries(countryData)
-    // console.log(convertCountryDataToArray)
-    // console.log(countryData)
-    console.log(apiData.cod)
     const mapNames = countryData.map((x, index) => {
       // return console.log(x.country)
       // console.log(x.country)
       // console.log(x)
       return(
         <View key={index}>
-          <Text onPress={()=>selectLocation(x.name, x.country, x.state)}>{x.name},{x.state},{longCountryName(x.country)}</Text>
+          <Text 
+            onPress={ () =>{
+                selectLocation(x.name, x.country, x.state)
+                setSearchInProgress(false)
+              }
+            }>
+              {x.name},{x.state},{longCountryName(x.country)}</Text>
         </View>
       )
     })
@@ -179,7 +192,11 @@ function HomeScreen({navigation}) {
                 {locationToGet === "loading" ? 
                 <View style={{flex:1, justifyContent:"center", width:"90%"}}>
                   <Text>Please enter the name of a city</Text>
-                  <Search apiData={apiData} setQuery={doSave} searchInProgress={setSearchInProgress}/>
+                  <Search 
+                    apiData={apiData} 
+                    setQuery={doSave} 
+                    searchInProgress={setSearchInProgress}
+                    />
                 </View>
                   // <View style={{flex:1, backgroundColor:"black", width:"100%", justifyContent:'center', alignItems:'center'}}>
                   //   <Text style={{color:colours.white}}>Loading...</Text>
@@ -189,14 +206,25 @@ function HomeScreen({navigation}) {
                     <Title navigation={navigation}/>    
                     <View style={styles.locationWeatherContainer}>
                         {/* <Sunriseset apiData={apiData.city}/> */}
-                        <Search apiData={apiData} setQuery={ doSave } searchInProgress={setSearchInProgress}/>
-                        {mapNames}
+                        
+                        <Text>Test 2</Text>
+                        <Search 
+                          apiData={apiData} 
+                          setQuery={ doSave } 
+                          // setQuery={ (value)=>console.log(value) } 
+                          searchInProgress={setSearchInProgress}
+                        />
+
                         
                         {searchInProgress || apiData.city === undefined || apiData.cod === 404 ? 
-                        <View style={{alignItems:"center", flexDirection:"column"} }>
-                          <Text>Searching...</Text>
-                          <Image source={require('../assets/loading2.gif')}/>
-                        </View>
+                          <>
+                          {mapNames}
+                          <View style={{alignItems:"center", flexDirection:"column"} }>
+                            <Text>Searching...</Text>
+                            <Image source={require('../assets/loading2.gif')}/>
+                          </View>
+                          
+                          </>
                           : 
                           <>
                             <CurrentWeather apiData={apiData} />

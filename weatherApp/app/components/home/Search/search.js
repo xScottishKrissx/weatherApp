@@ -13,8 +13,8 @@ export default function Search({setQuery, apiData, searchInProgress}) {
     useEffect(()=>{
         const timeoutId = setTimeout(() => {
             // console.log("useEffect" + checkOk)
-                setQuery(input, checkOk)
-                searchInProgress(false)
+                setQuery(input)
+                // searchInProgress(false)
             }
             , 1000)
         return () => clearTimeout(timeoutId)
@@ -37,8 +37,9 @@ export default function Search({setQuery, apiData, searchInProgress}) {
         };
       }, [startInput]);
 
-    
-    if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
+      
+      if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
+    //   console.log(apiData)
     // console.log(apiData)
     return (
     <View style={styles.searchWrapper}>
