@@ -153,12 +153,16 @@ Weather App:
               ☐ I have a query that fetches information from the API when you click on one of the list items. 
                 I need to:
                   ☐ Remove the search bar's ability to submit queries so that only pressing a result will return information
-                  ☐ Save the new location to local storage
-                  ☐ Retrieve saved location information from local storage
-                  ☐ Probably hide the UI until a location is selected(which could also free up more room for more results.)
+                    ☐ Just typing a name shouldnt select a new location
+                  ✔ Save the new location to local storage @done(22-09-16 17:02)
+                  ✔ Retrieve saved location information from local storage @done(22-09-16 17:02)
+                  ✔ Probably hide the UI until a location is selected(which could also free up more room for more results.) @done(22-09-16 17:05)
+                  
                 Known Issues:
                   ☐ The API has cities that return from the Geolocation API that dont actually return weather information. Unless I have this wrong I don't think there's anything I can do about this other than hide these cities before they're displayed in the list.
                     ☐ I don't know If im right about this but if i look up these cities on the Open Weather website, they're also not there. It's very strange.
+                    ☐ I think the weather information doesnt exist and the API is just spitting out the first thing in the array if you just type the city and no state or country code.
+
 
       Other Pages:
         ☐ How about instead of having multiple pages, you have multiple(up to 3?) saved locations that you can browse.

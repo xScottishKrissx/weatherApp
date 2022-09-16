@@ -14,6 +14,7 @@ export default function Search({setQuery, apiData, searchInProgress}) {
         const timeoutId = setTimeout(() => {
             // console.log("useEffect" + checkOk)
                 setQuery(input)
+                setInput(input)
                 // searchInProgress(false)
             }
             , 1000)
@@ -39,8 +40,7 @@ export default function Search({setQuery, apiData, searchInProgress}) {
 
       
       if(apiData){ if(apiData.cod === "404") checkOk = false } else { checkOk = true }
-    //   console.log(apiData)
-    // console.log(apiData)
+    // console.log(apiData.city)
     return (
     <View style={styles.searchWrapper}>
 
