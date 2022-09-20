@@ -27,7 +27,10 @@ const getStateCode = (usState) =>{
 }
 
 function HomeScreen({navigation}) {
-    
+  //  Reset
+  // AsyncStorage.clear()
+
+
 // API Call -------------------------------------------------------------------------------------------
     const [apiData, setApiData] = useState(null)
     const [countryData, setCountryData] = useState()
@@ -51,10 +54,11 @@ function HomeScreen({navigation}) {
 
       }
     };
-    getData()
+    // getData()
 
     const [searchInProgress, setSearchInProgress] = useState(false)
     const locationToGet = location || savedLocation || "loading"
+    console.log("Location to get:" + locationToGet)
 
     const storeData = async (query) => {
         // console.log("storeData: " + query)
@@ -66,10 +70,11 @@ function HomeScreen({navigation}) {
       };
 
       const doSave = (query, okToSave) =>{
-        // console.log("Do Save: " + query)
+        console.log("Do Save: " + query)
         setLocation(query)
-        // storeData(query)
-        // getData()
+        // saveLocation(query)
+        storeData(query)
+        getData()
       }
 
       const [selectedCity, setStoreCountry] = useState({
@@ -78,7 +83,7 @@ function HomeScreen({navigation}) {
         country:""
       })
    
-    // AsyncStorage.clear()
+
       const selectLocation = (city, countryCode, state) =>{
         // console.log("Check:: >>>>>" + apiData.city.name, savedLocation, city)
         // console.log("City: " + city)
@@ -166,7 +171,7 @@ function HomeScreen({navigation}) {
       )
     })
 
-    console.log(apiData.city)
+    // console.log(apiData.city)
 
     return (
         <View style={styles.container}>

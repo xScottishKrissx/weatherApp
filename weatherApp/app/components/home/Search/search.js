@@ -14,7 +14,7 @@ export default function Search({setQuery, apiData, searchInProgress, isSearchInP
         const timeoutId = setTimeout(() => {
             // console.log("useEffect" + checkOk)
                 setQuery(input)
-                setInput(input)
+                // setInput(input)
                 // searchInProgress(false)
             }
             , 1000)
