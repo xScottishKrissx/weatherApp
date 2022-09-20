@@ -162,6 +162,8 @@ Weather App:
                   ☐ The API has cities that return from the Geolocation API that dont actually return weather information. Unless I have this wrong I don't think there's anything I can do about this other than hide these cities before they're displayed in the list.
                     ☐ I don't know If im right about this but if i look up these cities on the Open Weather website, they're also not there. It's very strange.
                     ☐ I think the weather information doesnt exist and the API is just spitting out the first thing in the array if you just type the city and no state or country code.
+                  ☐ Some countries use different names for display and another for its actual name in the API. I should be using location to search for cities but I've way too far in to this to rip out what I've got. 
+                  ☐ Searching for Pollok will return it's name, but give you the weather for Glasgow. Nothing to be done for this as it's the API, but I can make it clear that you're just seeing a regions(glasgow etc )weather rather than a sub-region(pollok)
 
 
       Other Pages:

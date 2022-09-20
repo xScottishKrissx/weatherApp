@@ -34,7 +34,7 @@ function HomeScreen({navigation}) {
 
     const [loading, setLoading] = useState(false)
     const [savedLocation, saveLocation] = useState()
-    const [location, setLocation] = useState(savedLocation || "")
+    const [location, setLocation] = useState(savedLocation || "loading")
 
     const getData = async () => {
       // console.log("Get Data")
@@ -51,6 +51,7 @@ function HomeScreen({navigation}) {
 
       }
     };
+    getData()
 
     const [searchInProgress, setSearchInProgress] = useState(false)
     const locationToGet = location || savedLocation || "loading"
@@ -65,7 +66,7 @@ function HomeScreen({navigation}) {
       };
 
       const doSave = (query, okToSave) =>{
-        console.log("Do Save: " + query)
+        // console.log("Do Save: " + query)
         setLocation(query)
         // storeData(query)
         // getData()
@@ -79,16 +80,21 @@ function HomeScreen({navigation}) {
    
     // AsyncStorage.clear()
       const selectLocation = (city, countryCode, state) =>{
-        console.log("City: " + city)
+        // console.log("Check:: >>>>>" + apiData.city.name, savedLocation, city)
+        // console.log("City: " + city)
         // setLocation(city)
         if(countryCode === "US"){
           setStoreCountry({city:city, country:countryCode, state:getStateCode(state)})
           storeData(city)
-          // setLocation(city)
+          setSearchInProgress(false)
+          setLocation(city)
+          // console.log("Is US")
         }else{
           setStoreCountry({city:city, country:countryCode, state:""})
           storeData(city)
-          // setLocation(city)
+          // console.log("Is NOT US")
+          setSearchInProgress(false)
+          setLocation(city)
         }
       }
 
@@ -117,15 +123,17 @@ function HomeScreen({navigation}) {
           getData()
       }) 
       .catch(error => console.log(error))
-    }, [selectedCity, locationToGet])
+    }, [selectedCity, locationToGet, querySelectedCity])
 
     if(
       apiData === null  
       || countryData === undefined 
       || loading === true 
       || locationToGet === undefined 
-      || savedLocation === undefined 
-      || querySelectedCity === undefined
+
+      // This breaks the mobile app
+      // || savedLocation === undefined 
+      // || querySelectedCity === undefined
       ){return <LoadingScreen />}
 
 
@@ -136,6 +144,7 @@ function HomeScreen({navigation}) {
           apiData={apiData} 
           setQuery={doSave} 
           searchInProgress={setSearchInProgress}
+          isSearchInProgress={searchInProgress}
         />
       </View>
     }
@@ -148,7 +157,7 @@ function HomeScreen({navigation}) {
           <Text 
             onPress={ () =>{
                 selectLocation(x.name, x.country, x.state)
-                setSearchInProgress(false)
+                // setSearchInProgress(false)
               }
           }>
               {x.name},{x.state},{longCountryName(x.country)}
@@ -156,6 +165,8 @@ function HomeScreen({navigation}) {
         </View>
       )
     })
+
+    console.log(apiData.city)
 
     return (
         <View style={styles.container}>
@@ -168,6 +179,7 @@ function HomeScreen({navigation}) {
                     apiData={apiData} 
                     setQuery={doSave} 
                     searchInProgress={setSearchInProgress}
+                    isSearchInProgress={searchInProgress}
                     />
                 </View>
                  : 
@@ -181,10 +193,18 @@ function HomeScreen({navigation}) {
                           apiData={apiData} 
                           setQuery={ doSave } 
                           searchInProgress={setSearchInProgress}
+                          isSearchInProgress={searchInProgress}
                         />
 
                         
-                        {searchInProgress || apiData.city === undefined || apiData.cod === 404 ? 
+                        {
+                          searchInProgress 
+                          || apiData.city === undefined
+                          || apiData.cod === 404
+                          // This removes that second of seeing the previous city when searhcing, but will also stop the weather from loading on reload.
+                          // || apiData.city.name !== selectedCity.city 
+                          || savedLocation === undefined 
+                          ? 
                           <>
                           {mapNames}
                           <View style={{alignItems:"center", flexDirection:"column"} }>

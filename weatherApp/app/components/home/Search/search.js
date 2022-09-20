@@ -4,10 +4,10 @@ import { TextInput } from 'react-native-gesture-handler';
 import MatIcons from '@expo/vector-icons/MaterialIcons'
 import colours from '../../../config/colours';
 
-export default function Search({setQuery, apiData, searchInProgress}) {
+export default function Search({setQuery, apiData, searchInProgress, isSearchInProgress}) {
     let checkOk
     const [input, setInput] = useState()
-    const [startInput, setStartInput] = useState(false)
+    const [startInput, setStartInput] = useState(isSearchInProgress)
 
     // Delay query until after user stops typing...
     useEffect(()=>{

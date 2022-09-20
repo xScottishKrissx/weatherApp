@@ -16,6 +16,7 @@ const longCountryName = (countryCode) =>{
 
 function formatTemp(temperature){ return Math.floor(temperature) }
 export default function CurrentWeather({apiData, setQuery}) {
+    // console.log("Render Current Weather")
 
     // console.log(apiData)
     if(!apiData.city) 
@@ -26,6 +27,7 @@ export default function CurrentWeather({apiData, setQuery}) {
         )
     
     const {country, name, population} = apiData.city
+    
     const {lat, lon} = apiData.city.coord
     const {temp, temp_max, temp_min, humidity, feels_like} = apiData.list[0].main
     
@@ -36,6 +38,7 @@ export default function CurrentWeather({apiData, setQuery}) {
     
     
     const citName = name || "placeholder"
+    // console.log("--------------------------->" + citName)
 
   return (
     <>
